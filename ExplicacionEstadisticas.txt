@@ -1,0 +1,17 @@
+Medidas de tendencia central: Son estadísticas que representan el valor central o típico de un conjunto de datos. Las tres medidas más comunes de tendencia central son:
+
+a. Media aritmética: Es el promedio de todos los valores en un conjunto de datos. Se calcula sumando todos los valores y dividiendo la suma por el número de elementos en el conjunto.
+
+b. Mediana: Es el valor medio que divide el conjunto de datos en dos partes iguales. Para calcularla, primero se ordenan los datos y luego se selecciona el valor que se encuentra en la posición central.
+
+c. Moda: Es el valor que aparece con mayor frecuencia en el conjunto de datos.
+
+Desviación estándar: Es una medida de dispersión que indica cuánto se alejan los valores individuales del promedio (media). Una desviación estándar baja indica que los datos están cerca del promedio, mientras que una desviación estándar alta indica que los datos están más dispersos.
+
+Análisis de correlación: La correlación es una medida que indica el grado de relación entre dos variables. Puede ser positiva (ambas variables aumentan o disminuyen juntas), negativa (una variable aumenta mientras la otra disminuye) o nula (no hay relación aparente). El coeficiente de correlación de Pearson es una medida común para cuantificar la correlación entre dos variables numéricas.
+
+Pruebas de hipótesis: Son procedimientos estadísticos que permiten tomar decisiones sobre una afirmación o hipótesis acerca de un conjunto de datos. Se utilizan para determinar si una diferencia observada entre grupos es significativa o simplemente producto del azar. La prueba genera un valor p, que indica la probabilidad de obtener los resultados observados si la hipótesis nula (afirmación inicial) es verdadera.
+
+Regresiones: Es un análisis que busca establecer una relación matemática entre una variable dependiente y una o más variables independientes. El objetivo es crear un modelo que permita predecir el valor de la variable dependiente en función de los valores de las variables independientes. La regresión lineal es un tipo común de análisis de regresión que busca una relación lineal entre las variables.
+
+Estas herramientas estadísticas son fundamentales para analizar y comprender los datos en diferentes contextos, ya sea en el ámbito empresarial, científico o social. Es importante utilizarlas adecuadamente para obtener conclusiones válidas y significativas.

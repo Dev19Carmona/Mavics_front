@@ -1,0 +1,1 @@
+{dayCombinations: Array(1), dailyTotal: Array(1), years: Array(1)} {dayCombinations: Array(1), dailyTotal: Array(1), years: Array(1)}

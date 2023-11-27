@@ -1,0 +1,49 @@
+import { Box, Grid, SimpleGrid } from "@chakra-ui/react";
+import { ProductCard } from "../ProductCard";
+import {
+  IMAGE_ADD_PRODUCT,
+  IMAGE_TEST_PRODUCT,
+} from "../../../config/_constants";
+import { AiOutlineFolderAdd } from "react-icons/ai";
+import { MenuGeneral } from "../MenuGeneral";
+import { useEffect, useState } from "react";
+
+export const ProductsGrid = ({
+  products = [],
+  handleOpenModalProductSave = () => {},
+  handleOpenModalProductPresentation = () => {},
+  rightClickOptions,
+}) => {
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [isMenuOpen, setIsMenuOpen] = useState({});
+  const handleRightClick = (e, productId) => {
+    setMenuPosition({ top: e.pageY, left: e.pageX });
+    setIsMenuOpen({[productId]:true});
+  };
+  
+  
+  return (
+    <>
+    <SimpleGrid gap={2} columns={6}>
+      <Grid onClick={handleOpenModalProductSave} cursor="pointer">
+        <ProductCard data={{ isIcon: true, icon: <AiOutlineFolderAdd /> }} />
+      </Grid>
+      {products.map((product, i) => (
+        <Grid onContextMenu={(e)=>handleRightClick(e, product._id)} key={i}>
+          <ProductCard
+            data={{
+              src: product.urlImage,
+              name: product.name,
+              price: `$${Math.floor(product.price).toLocaleString()}`,
+              product,
+              // body: <TagList tags={product.tags} />,
+            }}
+            onClickProductPresentation={handleOpenModalProductPresentation}
+          />
+          <MenuGeneral options={rightClickOptions} props={{isMenuOpen, setIsMenuOpen, menuPosition, product}}/>
+        </Grid>
+      ))}
+    </SimpleGrid>
+    </>
+  );
+};
