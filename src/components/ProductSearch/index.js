@@ -8,6 +8,7 @@ import { SelectGeneral } from "../SelectGeneral";
 import { BiSolidTrash } from "react-icons/bi";
 import { ItemCard } from "../ItemCard";
 import { ProductSearchBox } from "../ProductSearchBox";
+import { getLazyQuery } from "../../../config/_functions";
 
 export const ProductSearch = ({
   tags = [],
@@ -17,12 +18,19 @@ export const ProductSearch = ({
   getSuppliers,
   handleSubmitSearchProductPerSupplier,
   handleDeleteFilters,
-  handleFilterProducts
+  handleFilterProducts,
+  getCategories,
+  getSizes,
 }) => {
   const { colorMode } = useColorModeGeneral();
-  useEffect(() => {
-    getSuppliers();
-  }, []);
+  const [categoriesState, setCategoriesState] = useState([]);
+  const [sizesState, setSizesState] = useState([]);
+
+  const openSizes = async () => {
+    let sizes = await getSuppliers();
+    sizes = sizes.data;
+    console.log(sizes);
+  };
 
   return (
     <Flex
@@ -39,12 +47,12 @@ export const ProductSearch = ({
         bg={colorMode === "light" ? "red.600" : "red.300"}
         padding={2}
         color={colorMode === "light" ? "white" : "black"}
-        cursor={'pointer'}
+        cursor={"pointer"}
         onClick={handleDeleteFilters}
       >
-        <BiSolidTrash fontSize={18}/>
+        <BiSolidTrash fontSize={18} />
       </Button>
-      
+
       <Box w={"20%"}>
         <InputGeneral
           left={
@@ -58,27 +66,37 @@ export const ProductSearch = ({
               placeholder="Buscar..."
               onChange={(e) => {
                 handleSearchProduct(e.target.value);
-                handleFilterProducts({key:"name", value:e.target.value})
+                handleFilterProducts({ key: "name", value: e.target.value });
               }}
             />
           }
           right={<GiMagnifyingGlass />}
         />
       </Box>
-        
-      <Box width={"35%"}>
+
+      <Box
+        width={"35%"}
+        onClick={() => {
+          getLazyQuery(getSizes, "sizes", setSizesState);
+        }}
+      >
         <SelectGeneral
-          titleSelect="Tags"
-          items={tags}
+          titleSelect="Tallas"
+          items={sizesState}
           handleSubmit={handleFilterProducts}
           reference={"tag"}
         />
       </Box>
-      <Box width={"35%"}>
+      <Box
+        width={"35%"}
+        onClick={() => {
+          getLazyQuery(getCategories, "categories", setCategoriesState);
+        }}
+      >
         <SelectGeneral
           handleSubmit={handleFilterProducts}
-          items={suppliers}
-          titleSelect="Proveedores"
+          items={categoriesState}
+          titleSelect="Categorias"
           reference={"provider"}
         />
       </Box>

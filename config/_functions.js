@@ -5,3 +5,13 @@ export const cutString = (string) => {
     return cut.concat('...')
   }else return string
 }
+
+export const getLazyQuery = async (get, type, set) => {
+  let data = await get();
+  data = data.data[type];
+  set((prevState) => {
+    const prevCopy = [...prevState];
+    if (prevCopy.length === 0 && data.length > 0) prevCopy.push(...data);
+    return prevCopy;
+  });
+};

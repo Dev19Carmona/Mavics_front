@@ -5,7 +5,7 @@ export const ItemsList = ({ items = [], onClick = () => {}, reference = "key" })
   return (
     <Grid
       templateColumns="repeat(3, 1fr)" // Dos columnas
-      gap={2} // Espacio entre las cajas
+      gap={1} // Espacio entre las cajas
       justifyContent="center"
     >
       {items.map((item, i) => (

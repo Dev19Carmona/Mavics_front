@@ -17,6 +17,7 @@ import { TagSelect } from "../TagSelect";
 import { FaImage, FaListUl, FaTag } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { LiaUsersCogSolid } from "react-icons/lia";
+import { getLazyQuery } from "../../../config/_functions";
 
 export const ProductForm = ({ props }) => {
   const {
@@ -30,9 +31,19 @@ export const ProductForm = ({ props }) => {
     handleSelectTag,
     tagsSelected,
     suppliersState = [],
-    
+    getSuppliers,
+    getCategories
   } = props;
+  
   const { colorMode } = useColorModeGeneral();
+  const [suppliers, setSuppliers] = useState([]);
+  const [categories, setCategories] = useState([]);
+  
+  useEffect(() => {
+    getLazyQuery(getSuppliers, "suppliers", setSuppliers);
+    getLazyQuery(getCategories, "categories", setCategories);
+  }, [])
+  
   const handleKeyPress = (e) => {
     const key = e.key;
     if (!/[0-9]/.test(key)) {
@@ -56,8 +67,8 @@ export const ProductForm = ({ props }) => {
           <Form>
             <Grid
               gap={10}
-              templateColumns="repeat(2, 1fr)"
-              templateRows="repeat(2, 1fr)"
+              //templateColumns="repeat(2, 1fr)"
+              //templateRows="repeat(2, 1fr)"
             >
               <GridItem>
                 <Flex
@@ -80,6 +91,15 @@ export const ProductForm = ({ props }) => {
                       required={true}
                     />
                   </FormControl>
+                  <FormControl id="description">
+                    <Field
+                      name="description"
+                      as={Input}
+                      type="text"
+                      placeholder="Descripcion"
+                      required={false}
+                    />
+                  </FormControl>
                   <FormControl id="amount">
                     <Field
                       name="amount"
@@ -95,7 +115,7 @@ export const ProductForm = ({ props }) => {
                       name="price"
                       as={Input}
                       type="number"
-                      placeholder="Ingresa el precio"
+                      placeholder="Precio"
                       required={true}
                       onKeyPress={handleKeyPress}
                     />
@@ -112,16 +132,62 @@ export const ProductForm = ({ props }) => {
                   borderRadius={9}
                 >
                   <Flex justifyContent={"space-between"}>
-                    <Text>Agregar Tags:</Text>
-                    <FaTag fontSize={20} />
+                    <Text>Proveedores:</Text>
+                    <LiaUsersCogSolid fontSize={20} />
                   </Flex>
-                  <TagSelect
-                    handleSelectTag={handleSelectTag}
-                    tagFilter={tagFilter}
-                    tags={tags}
-                    handleChange={handleSearchTag}
-                    tagsSelected={tagsSelected}
-                  />
+                  <FormControl id="supplierId">
+                    <Field
+                      name="supplierId"
+                      as={Select}
+                      type="text"
+                      placeholder="----"
+                    >
+                      {suppliers.map((supplier, i) => (
+                        <option key={i} value={supplier._id}>
+                          {supplier.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </FormControl>
+
+                  <Flex justifyContent={"space-between"}>
+                    <Text>Categorias:</Text>
+                    <LiaUsersCogSolid fontSize={20} />
+                  </Flex>
+                  <FormControl id="categoryId">
+                    <Field
+                      name="categoryId"
+                      as={Select}
+                      type="text"
+                      placeholder="----"
+                    >
+                      {categories.map((supplier, i) => (
+                        <option key={i} value={supplier._id}>
+                          {supplier.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </FormControl>
+
+                  <Flex justifyContent={"space-between"}>
+                    <Text>Tallas:</Text>
+                    <LiaUsersCogSolid fontSize={20} />
+                  </Flex>
+                  <FormControl id="supplierId">
+                    <Field
+                      name="supplierId"
+                      as={Select}
+                      type="text"
+                      placeholder="----"
+                      disabled={true}
+                    >
+                      {suppliersState.map((supplier, i) => (
+                        <option key={i} value={supplier._id}>
+                          {supplier.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </FormControl>
                 </Flex>
               </GridItem>
 
@@ -201,35 +267,6 @@ export const ProductForm = ({ props }) => {
                     </Flex>
                     //</Collapse>
                   )}
-                </Flex>
-              </GridItem>
-
-              <GridItem>
-                <Flex
-                  gap={2}
-                  flexDir={"column"}
-                  p={4}
-                  boxShadow="md"
-                  borderRadius={9}
-                >
-                  <Flex justifyContent={"space-between"}>
-                    <Text>Elegir Proveedor:</Text>
-                    <LiaUsersCogSolid fontSize={20} />
-                  </Flex>
-                  <FormControl id="supplierId">
-                    <Field
-                      name="supplierId"
-                      as={Select}
-                      type="text"
-                      placeholder="----"
-                    >
-                      {suppliersState.map((supplier, i) => (
-                        <option key={i} value={supplier._id}>
-                          {supplier.name}
-                        </option>
-                      ))}
-                    </Field>
-                  </FormControl>
                 </Flex>
               </GridItem>
             </Grid>

@@ -15,15 +15,15 @@ export const supplierSave = gql`
 `;
 
 export const suppliers = gql`
-  query Query($filter: supplierFilter) {
+  query Suppliers($filter: supplierFilter) {
     suppliers(filter: $filter) {
       _id
-      name
-      phone
-      nit
-      manager
       isActive
       isRemove
+      manager
+      name
+      nit
+      phone
     }
   }
 `;

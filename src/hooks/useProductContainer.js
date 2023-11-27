@@ -4,9 +4,11 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { useModalGeneral } from "./Generals/useModalGeneral";
 import { suppliers } from "@/graphql/Supplier";
+import { Categories } from "@/graphql/Category";
 import { AiFillDelete } from "react-icons/ai";
 import { LuInspect } from "react-icons/lu";
 import { TIME_LOADING } from "../../config/_constants";
+import { Sizes } from "@/graphql/Size";
 export const useProductContainer = () => {
   const [filterData, setFilterData] = useState({})
   const [productPresentation, setProductPresentation] = useState({});
@@ -26,6 +28,9 @@ export const useProductContainer = () => {
     price: "",
     amount: "",
     supplierId: "",
+    categoryId: "",
+    sizeId: "",
+    gender: "",
   });
   const {
     isOpen,
@@ -38,6 +43,7 @@ export const useProductContainer = () => {
   } = useModalGeneral();
   const settingsModalProductPresentation = useModalGeneral();
   const settingsModalProductDelete = useModalGeneral();
+  const settingsModalProductSave = useModalGeneral();
   const [getTags, { data: tags, loading: tagsLoad, error: tagsError }] =
     useLazyQuery(Tags);
   const [
@@ -45,6 +51,8 @@ export const useProductContainer = () => {
     { data: Products, loading: productsLoad, error: productsError },
   ] = useLazyQuery(products);
   const [getSuppliers, { data: Suppliers }] = useLazyQuery(suppliers);
+  const [getCategories, { data: categories }] = useLazyQuery(Categories);
+  const [getSizes, { data: sizes }] = useLazyQuery(Sizes);
   const [
     productSave,
     { data: newProduct, loading: loadNewProduct, error: errorNewProduct },
@@ -133,10 +141,9 @@ export const useProductContainer = () => {
     resetForm();
   };
   const handleOpenModalProductSave = () => {
-    getSuppliers();
     setTagFilter("");
-    setOverlay(<OverlayTwo />);
-    onOpen();
+    settingsModalProductSave.setOverlay(<OverlayOne />);
+    settingsModalProductSave.onOpen();
   };
   const handleOpenModalProductPresentation = (product) => {
     setProductPresentation(product);
@@ -148,9 +155,7 @@ export const useProductContainer = () => {
     settingsModalProductDelete.setOverlay(<OverlayOne />);
     settingsModalProductDelete.onOpen();
   };
-  useEffect(() => {
-    setSuppliersState(Suppliers?.suppliers);
-  }, [Suppliers]);
+
 
   const handleSaveImageProduct = (event) => {
     if (event?.target?.validity && event?.target?.files) {
@@ -159,7 +164,7 @@ export const useProductContainer = () => {
   };
 
   const handleCloseModal = () => {
-    onClose();
+    settingsModalProductSave.onClose();
     setImageProduct();
     setTagFilter();
   };
@@ -276,6 +281,9 @@ export const useProductContainer = () => {
     loadDeleteProduct,
     handleSubmitSearchProductPerSupplier,
     handleDeleteFilters,
-    handleFilterProducts
+    handleFilterProducts,
+    getCategories,
+    getSizes,
+    settingsModalProductSave
   };
 };

@@ -49,14 +49,16 @@ export const ProductsContainer = () => {
     loadDeleteProduct,
     handleSubmitSearchProductPerSupplier,
     handleDeleteFilters,
-    handleFilterProducts
+    handleFilterProducts,
+    getCategories,
+    getSizes,
+    settingsModalProductSave
   } = useProductContainer();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     getProducts();
-    if (loadDeleteProduct || loadNewProduct) setIsLoading(true)
-    else setIsLoading(false)
-    
+    if (loadDeleteProduct || loadNewProduct) setIsLoading(true);
+    else setIsLoading(false);
   }, [loadDeleteProduct, loadNewProduct]);
   return (
     <>
@@ -85,10 +87,14 @@ export const ProductsContainer = () => {
             handleSearchProduct={handleSearchProduct}
             handleSubmitSearchProduct={handleSubmitSearchProduct}
             handleSubmitSearchProductPerTag={handleSubmitSearchProductPerTag}
-            handleSubmitSearchProductPerSupplier={handleSubmitSearchProductPerSupplier}
+            handleSubmitSearchProductPerSupplier={
+              handleSubmitSearchProductPerSupplier
+            }
             tags={tags?.tags}
             handleDeleteFilters={handleDeleteFilters}
             handleFilterProducts={handleFilterProducts}
+            getCategories={getCategories}
+            getSizes={getSizes}
           />
           <ProductsGrid
             handleOpenModalProductSave={handleOpenModalProductSave}
@@ -110,21 +116,17 @@ export const ProductsContainer = () => {
               handleSubmitProductCreate,
               initialValuesProduct,
               imageProduct,
-              handleSearchTag,
-              tags,
-              tagFilter,
-              handleSelectTag,
-              tagsSelected,
-              suppliersState,
-              
+              getSuppliers,
+              getCategories,
             }}
           />
         }
-        isOpen={isOpen}
+        isOpen={settingsModalProductSave.isOpen}
         onClose={handleCloseModal}
-        overlay={overlay}
+        overlay={settingsModalProductSave.overlay}
         title="Crear Producto"
-        size="full"
+        size="xl"
+        color={colorMode === "light" ? "header.light" : "header.dark"}
       />
       <ModalGeneral
         body={<ProductPresentation props={{ productPresentation }} />}

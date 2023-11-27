@@ -3,13 +3,18 @@ import { AiFillDownCircle, AiFillUpCircle } from "react-icons/ai";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { ItemsList } from "../ItemsList";
 
-export const SelectGeneral = ({ handleSubmit, items, titleSelect, reference }) => {
+export const SelectGeneral = ({
+  handleSubmit,
+  items,
+  titleSelect,
+  reference,
+}) => {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode } = useColorModeGeneral();
   return (
-    <Flex  justifyContent={"center"} flexDir={"column"}>
+    <Flex justifyContent={"center"} flexDir={"column"}>
       <Flex
-      borderRadius={8}
+        borderRadius={8}
         justifyContent={"space-between"}
         width={"full"}
         p={2}
@@ -42,7 +47,11 @@ export const SelectGeneral = ({ handleSubmit, items, titleSelect, reference }) =
             w={"93%"}
             p={2}
           >
-            <ItemsList onClick={handleSubmit} items={items} reference={reference}/>
+            <ItemsList
+              onClick={handleSubmit}
+              items={items}
+              reference={reference}
+            />
           </Flex>
         </Collapse>
       </Flex>
