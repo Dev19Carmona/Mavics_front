@@ -10,14 +10,22 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ButtonSubmitGeneral } from "../ButtonSubmitGeneral";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, useField } from "formik";
 import { BiImageAdd } from "react-icons/bi";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { TagSelect } from "../TagSelect";
-import { FaImage, FaListUl, FaTag } from "react-icons/fa";
+import {
+  FaGenderless,
+  FaImage,
+  FaListUl,
+  FaTag,
+  FaUsers,
+} from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { LiaUsersCogSolid } from "react-icons/lia";
 import { getLazyQuery } from "../../../config/_functions";
+import { GENDERS } from "../../../config/_constants";
+import { TbCategory, TbRulerMeasure } from "react-icons/tb";
 
 export const ProductForm = ({ props }) => {
   const {
@@ -32,18 +40,19 @@ export const ProductForm = ({ props }) => {
     tagsSelected,
     suppliersState = [],
     getSuppliers,
-    getCategories
+    getCategories,
+    getSizes,
   } = props;
-  
+
   const { colorMode } = useColorModeGeneral();
   const [suppliers, setSuppliers] = useState([]);
   const [categories, setCategories] = useState([]);
-  
+  const [sizes, setSizes] = useState([]);
   useEffect(() => {
     getLazyQuery(getSuppliers, "suppliers", setSuppliers);
     getLazyQuery(getCategories, "categories", setCategories);
-  }, [])
-  
+  }, []);
+
   const handleKeyPress = (e) => {
     const key = e.key;
     if (!/[0-9]/.test(key)) {
@@ -57,13 +66,14 @@ export const ProductForm = ({ props }) => {
     justifyContent: "space-between",
     alignItems: "center",
   };
+
   return (
-    <Box userSelect="none" boxShadow="lg" margin={4} p={4} borderRadius={9}>
+    <Box userSelect="none" margin={4} p={4} borderRadius={9}>
       <Formik
         onSubmit={handleSubmitProductCreate}
         initialValues={initialValuesProduct}
       >
-        {() => (
+        {({ setFieldValue, values }) => (
           <Form>
             <Grid
               gap={10}
@@ -132,8 +142,27 @@ export const ProductForm = ({ props }) => {
                   borderRadius={9}
                 >
                   <Flex justifyContent={"space-between"}>
+                    <Text>Genero:</Text>
+                    <FaGenderless fontSize={20} />
+                  </Flex>
+                  <FormControl id="gender">
+                    <Field
+                      name="gender"
+                      as={Select}
+                      type="text"
+                      placeholder="----"
+                    >
+                      {GENDERS.map((gender) => (
+                        <option key={gender.id} value={gender.key}>
+                          {gender.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </FormControl>
+
+                  <Flex justifyContent={"space-between"}>
                     <Text>Proveedores:</Text>
-                    <LiaUsersCogSolid fontSize={20} />
+                    <FaUsers fontSize={20} />
                   </Flex>
                   <FormControl id="supplierId">
                     <Field
@@ -152,7 +181,7 @@ export const ProductForm = ({ props }) => {
 
                   <Flex justifyContent={"space-between"}>
                     <Text>Categorias:</Text>
-                    <LiaUsersCogSolid fontSize={20} />
+                    <TbCategory fontSize={20} />
                   </Flex>
                   <FormControl id="categoryId">
                     <Field
@@ -160,30 +189,49 @@ export const ProductForm = ({ props }) => {
                       as={Select}
                       type="text"
                       placeholder="----"
+                      onChange={(e) => {
+                        setFieldValue("categoryId", e.target.value);
+                        const array = [e.target.value]
+                        console.log(array);
+                        getLazyQuery(getSizes, "sizes", setSizes, {
+                          variables: {
+                            filter: {
+                              categoryIds: [e.target.value],
+                            },
+                          },
+                        });
+                      }}
                     >
-                      {categories.map((supplier, i) => (
-                        <option key={i} value={supplier._id}>
-                          {supplier.name}
+                      {categories.map((cateogry, i) => (
+                        <option key={i} value={cateogry._id}>
+                          {cateogry.name}
                         </option>
                       ))}
                     </Field>
                   </FormControl>
 
-                  <Flex justifyContent={"space-between"}>
+                  <Flex
+                    color={
+                      !values.categoryId || sizes.length === 0
+                        ? "gray"
+                        : "white"
+                    }
+                    justifyContent={"space-between"}
+                  >
                     <Text>Tallas:</Text>
-                    <LiaUsersCogSolid fontSize={20} />
+                    <TbRulerMeasure fontSize={20} />
                   </Flex>
-                  <FormControl id="supplierId">
+                  <FormControl id="sizeId">
                     <Field
-                      name="supplierId"
+                      name="sizeId"
                       as={Select}
                       type="text"
                       placeholder="----"
-                      disabled={true}
+                      disabled={!values.categoryId || sizes.length === 0}
                     >
-                      {suppliersState.map((supplier, i) => (
-                        <option key={i} value={supplier._id}>
-                          {supplier.name}
+                      {sizes.map((size, i) => (
+                        <option key={i} value={size._id}>
+                          {size.name}
                         </option>
                       ))}
                     </Field>
@@ -231,7 +279,7 @@ export const ProductForm = ({ props }) => {
                     >
                       <label htmlFor="image" style={labelStyles}>
                         <BiImageAdd fontSize={24} />
-                        Subir imagen
+                        {imageProduct ? "" : "Subir imagen"}
                       </label>
                     </Flex>
                   </Flex>

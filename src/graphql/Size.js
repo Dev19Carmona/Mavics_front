@@ -4,13 +4,13 @@ export const Sizes = gql`
   query Sizes($filter: sizeFilter) {
     sizes(filter: $filter) {
       _id
-      category {
+      categories {
         _id
         isRemove
         name
       }
-      isRemove
       name
+      isRemove
     }
   }
 `;

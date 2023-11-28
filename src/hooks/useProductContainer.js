@@ -9,6 +9,8 @@ import { AiFillDelete } from "react-icons/ai";
 import { LuInspect } from "react-icons/lu";
 import { TIME_LOADING } from "../../config/_constants";
 import { Sizes } from "@/graphql/Size";
+import { SupplierForm } from "@/components/SupplierForm";
+import { TableGeneral } from "@/components/TableGeneral";
 export const useProductContainer = () => {
   const [filterData, setFilterData] = useState({})
   const [productPresentation, setProductPresentation] = useState({});
@@ -44,15 +46,29 @@ export const useProductContainer = () => {
   const settingsModalProductPresentation = useModalGeneral();
   const settingsModalProductDelete = useModalGeneral();
   const settingsModalProductSave = useModalGeneral();
+
+  //-------Settings Modal (sizes/categories/suppliers)
+  const settingsModalSize = useModalGeneral();
+  const settingsModalCategory = useModalGeneral();
+  const settingsModalSupplier = useModalGeneral();
+  const modalSettings = {
+    settingsModalSize,
+    settingsModalCategory,
+    settingsModalSupplier,
+    settingsModalProductPresentation,
+    settingsModalProductDelete,
+    settingsModalProductSave
+  }
+
   const [getTags, { data: tags, loading: tagsLoad, error: tagsError }] =
     useLazyQuery(Tags);
   const [
     getProducts,
     { data: Products, loading: productsLoad, error: productsError },
   ] = useLazyQuery(products);
-  const [getSuppliers, { data: Suppliers }] = useLazyQuery(suppliers);
-  const [getCategories, { data: categories }] = useLazyQuery(Categories);
-  const [getSizes, { data: sizes }] = useLazyQuery(Sizes);
+  const [getSuppliers] = useLazyQuery(suppliers);
+  const [getCategories] = useLazyQuery(Categories);
+  const [getSizes] = useLazyQuery(Sizes);
   const [
     productSave,
     { data: newProduct, loading: loadNewProduct, error: errorNewProduct },
@@ -60,9 +76,6 @@ export const useProductContainer = () => {
     refetchQueries: [
       {
         query: products,
-      },
-      {
-        query: Tags,
       },
     ],
   });
@@ -118,27 +131,30 @@ export const useProductContainer = () => {
   }, [Products]);
 
   const handleSubmitProductCreate = async (values, { resetForm }) => {
-    onClose();
-    setImageProduct();
-    setTagFilter();
-    setTagsSelected([]);
+    console.log(values);
+    //settingsModalProductSave.onClose();
+    //setImageProduct();
     try {
       await productSave({
         variables: {
           data: {
             name: values.name,
+            description: values.description,
             price: values.price,
+            supplierId: values.supplierId,
+            categoryId: values.categoryId,
+            sizeId: values.sizeId,
+            gender: values.gender,
             amount: values.amount,
-            tags: tagsSelected,
             image: imageProduct,
             supplierId: values.supplierId,
           },
         },
       });
+      //resetForm();
     } catch (error) {
       console.log(error);
     }
-    resetForm();
   };
   const handleOpenModalProductSave = () => {
     setTagFilter("");
@@ -155,6 +171,15 @@ export const useProductContainer = () => {
     settingsModalProductDelete.setOverlay(<OverlayOne />);
     settingsModalProductDelete.onOpen();
   };
+
+  const handleOpenAndCloseModal = (settings) => {
+    const {isOpen} = settings;
+    if (!isOpen) {
+      settings.setOverlay(<OverlayOne />);
+      settings.onOpen();
+    } else settings.onClose()
+    
+  }
 
 
   const handleSaveImageProduct = (event) => {
@@ -246,6 +271,18 @@ export const useProductContainer = () => {
     filterObject[key] = value
     setFilterData(filterObject)
   }
+  const tabsDataSupplierCategorySize = {
+    supplierData:[
+      {
+        name: "Proveedores",
+        body: <TableGeneral/>
+      },
+      {
+        name: "Crear Proveedor",
+        body: <SupplierForm/>
+      },
+    ]
+  }
   return {
     tags,
     handleSearchProduct,
@@ -268,11 +305,9 @@ export const useProductContainer = () => {
     productsState,
     suppliersState,
     handleOpenModalProductPresentation,
-    settingsModalProductPresentation,
     handleCloseModalProductPresentation,
     productPresentation,
     rightClickOptions,
-    settingsModalProductDelete,
     handleCloseModalProductDelete,
     dataOptionsDeleteProduct,
     getProducts,
@@ -284,6 +319,8 @@ export const useProductContainer = () => {
     handleFilterProducts,
     getCategories,
     getSizes,
-    settingsModalProductSave
+    modalSettings,
+    handleOpenAndCloseModal,
+    tabsDataSupplierCategorySize
   };
 };

@@ -6,12 +6,13 @@ export const cutString = (string) => {
   }else return string
 }
 
-export const getLazyQuery = async (get, type, set) => {
-  let data = await get();
+export const getLazyQuery = async (get, type, set, variables = {}) => {
+  let data = await get(variables);
   data = data.data[type];
   set((prevState) => {
-    const prevCopy = [...prevState];
-    if (prevCopy.length === 0 && data.length > 0) prevCopy.push(...data);
+    let prevCopy = [...prevState];
+    prevCopy = [...data]
+    //if (prevCopy.length === 0 && data.length > 0) prevCopy.push(...data);
     return prevCopy;
   });
 };
