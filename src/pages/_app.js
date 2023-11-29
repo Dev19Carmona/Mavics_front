@@ -42,7 +42,7 @@ const authLink = setContext((_, { headers }) => {
   };
 }).concat(
   createUploadLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "https://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
   })
 );
 //hola
