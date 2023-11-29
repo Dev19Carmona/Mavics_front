@@ -49,7 +49,7 @@ const authLink = setContext((_, { headers }) => {
 const wsLink = new GraphQLWsLink(
   createClient({
     webSocketImpl: WebSocket,
-    url: "ws://localhost:4000/graphql",
+    url: "ws://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
   })
 );
 
