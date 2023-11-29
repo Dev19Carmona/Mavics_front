@@ -49,7 +49,9 @@ export const ProductForm = ({ props }) => {
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
   useEffect(() => {
+    if(suppliers.length === 0)
     getLazyQuery(getSuppliers, "suppliers", setSuppliers);
+    if(categories.length === 0)
     getLazyQuery(getCategories, "categories", setCategories);
   }, [getSuppliers, setCategories, setSuppliers, getCategories]);
 
