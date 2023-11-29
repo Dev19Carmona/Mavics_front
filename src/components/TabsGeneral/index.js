@@ -2,19 +2,18 @@ import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
 export const TabsGeneral = ({ array = [] }) => {
-  console.log(array);
   const { colorMode } = useColorModeGeneral();
   return (
     <Tabs isFitted variant="enclosed">
       <TabList mb="1em">
-        {array.map((element) => (
-          <Tab>{element.name}</Tab>
+        {array.map((element, i) => (
+          <Tab key={i}>{element.name}</Tab>
         ))}
       </TabList>
       <TabPanels>
         {
-          array.map(element=>(
-        <TabPanel>
+          array.map((element, i)=>(
+        <TabPanel key={i}>
           <p>{element.body}</p>
         </TabPanel>
 

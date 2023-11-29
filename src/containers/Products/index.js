@@ -191,7 +191,7 @@ export const ProductsContainer = () => {
       color: colorMode === "light" ? "header.light" : "header.dark",
     },
   ];
-  const modalDynamic = (body, isOpen, onClose, overlay, title, size, color) => (
+  const modalDynamic = (body, isOpen, onClose, overlay, title, size, color, i) => (
     <ModalGeneral
       body={body}
       isOpen={isOpen}
@@ -200,6 +200,7 @@ export const ProductsContainer = () => {
       title={title}
       size={size}
       color={color}
+      key={i}
     />
   );
 
@@ -279,7 +280,7 @@ export const ProductsContainer = () => {
       </Flex>
       {isLoading && <LoaderGeneral isLoading={isLoading} />}
 
-      {modalArray.map((modal) =>
+      {modalArray.map((modal, i) =>
         modalDynamic(
           modal.body,
           modal.isOpen,
@@ -287,7 +288,8 @@ export const ProductsContainer = () => {
           modal.overlay,
           modal.title,
           modal.size,
-          modal.color
+          modal.color,
+          i
         )
       )}
     </>
