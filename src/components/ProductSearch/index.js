@@ -29,7 +29,6 @@ export const ProductSearch = ({
   const openSizes = async () => {
     let sizes = await getSuppliers();
     sizes = sizes.data;
-    console.log(sizes);
   };
 
   return (

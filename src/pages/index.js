@@ -10,7 +10,7 @@ function Index() {
   const sessionManagment = localSession?.localSession;
   useEffect(() => {
     if (sessionManagment?.isSession) router.push('/dashboard')
-  }, [sessionManagment, localSession])
+  }, [sessionManagment, localSession, router])
   
   return (
       <Login />

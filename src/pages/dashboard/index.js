@@ -15,7 +15,7 @@ function Dashboard() {
   const sessionManagment = localSession?.localSession;
   useEffect(() => {
     if (!sessionManagment?.isSession) router.push("/");
-  }, [sessionManagment, localSession]);
+  }, [sessionManagment, localSession, router]);
   return (
     <>
       {expireSession ? (

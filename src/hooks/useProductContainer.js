@@ -119,7 +119,7 @@ export const useProductContainer = () => {
         },
       },
     });
-  }, [tagFilter]);
+  }, [tagFilter, getTags]);
   useEffect(() => {
     const products = Products?.products.map((product) => {
       const res = { ...product };
@@ -131,7 +131,6 @@ export const useProductContainer = () => {
   }, [Products]);
 
   const handleSubmitProductCreate = async (values, { resetForm }) => {
-    console.log(values);
     //settingsModalProductSave.onClose();
     //setImageProduct();
     try {

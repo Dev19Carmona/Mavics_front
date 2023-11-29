@@ -9,7 +9,7 @@ export const useNavBarLayout = () => {
   const [isExpired, setIsExpired] = useState(false)
   useEffect(() => {
     setIsExpired(localSession?.localSession?.expireSession)
-  }, [])
+  }, [setIsExpired, localSession?.localSession?.expireSession])
   
 
   const OverlayOne = () => (

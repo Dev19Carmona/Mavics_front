@@ -51,7 +51,7 @@ export const ProductForm = ({ props }) => {
   useEffect(() => {
     getLazyQuery(getSuppliers, "suppliers", setSuppliers);
     getLazyQuery(getCategories, "categories", setCategories);
-  }, []);
+  }, [getSuppliers, setCategories, setSuppliers, getCategories]);
 
   const handleKeyPress = (e) => {
     const key = e.key;
@@ -192,7 +192,6 @@ export const ProductForm = ({ props }) => {
                       onChange={(e) => {
                         setFieldValue("categoryId", e.target.value);
                         const array = [e.target.value]
-                        console.log(array);
                         getLazyQuery(getSizes, "sizes", setSizes, {
                           variables: {
                             filter: {

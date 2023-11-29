@@ -68,14 +68,13 @@ export const ProductsContainer = () => {
     
   } = modalSettings;
   const { supplierData } = tabsDataSupplierCategorySize
-  console.log(supplierData);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getProducts();
     if (loadDeleteProduct || loadNewProduct) setIsLoading(true);
     else setIsLoading(false);
-  }, [loadDeleteProduct, loadNewProduct]);
+  }, [loadDeleteProduct, loadNewProduct, setIsLoading, getProducts]);
 
   const buttonsCreateArray = [
     {
@@ -192,16 +191,18 @@ export const ProductsContainer = () => {
     },
   ];
   const modalDynamic = (body, isOpen, onClose, overlay, title, size, color, i) => (
-    <ModalGeneral
-      body={body}
-      isOpen={isOpen}
-      onClose={onClose}
-      overlay={overlay}
-      title={title}
-      size={size}
-      color={color}
-      key={i}
-    />
+    <Box key={i}>
+      <ModalGeneral
+        body={body}
+        isOpen={isOpen}
+        onClose={onClose}
+        overlay={overlay}
+        title={title}
+        size={size}
+        color={color}
+        
+      />
+    </Box>
   );
 
   return (
@@ -260,8 +261,8 @@ export const ProductsContainer = () => {
           boxShadow={"xl"}
           borderRadius={9}
         >
-          {buttonsCreateArray.map((button) => (
-            <Tooltip hasArrow label={button.name} bg={"extra"}>
+          {buttonsCreateArray.map((button, i) => (
+            <Tooltip key={button.id} hasArrow label={button.name} bg={"extra"}>
               <Box
                 bg={colorMode === "light" ? "box.light" : "box.dark"}
                 key={button.id}

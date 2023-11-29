@@ -6,10 +6,10 @@ export const LoginContext = createContext();
 export const LoginContextProvider = ({ children }) => {
   const [localSession, setLocalSession] = useState();
   const [check, setCheck] = useState(false)
-  const handleCheck = () => {
-    setCheck(!check)
-  }
   useEffect(() => {
+    const handleCheck = () => {
+      setCheck(!check)
+    }
     
     const localSessionToken = localStorage.getItem("session");
     const isSession = JSON.parse(localStorage.getItem("isSession"));
