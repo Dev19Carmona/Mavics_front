@@ -1,4 +1,4 @@
-import { Box, Grid, SimpleGrid } from "@chakra-ui/react";
+import { Text, Grid, SimpleGrid } from "@chakra-ui/react";
 import { ProductCard } from "../ProductCard";
 import {
   IMAGE_ADD_PRODUCT,
@@ -36,7 +36,7 @@ export const ProductsGrid = ({
               name: product.name,
               price: `$${Math.floor(product.price).toLocaleString()}`,
               product,
-              // body: <TagList tags={product.tags} />,
+              body: <Text letterSpacing={3}>{product.description}</Text>,
             }}
             onClickProductPresentation={handleOpenModalProductPresentation}
           />

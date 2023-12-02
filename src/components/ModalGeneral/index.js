@@ -20,7 +20,7 @@ export const ModalGeneral = ({
   color = "black",
 }) => {
   return (
-    <Modal size={size} isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal scrollBehavior={'inside'} size={size} isCentered isOpen={isOpen} onClose={onClose}>
       {overlay}
       <ModalContent>
         <ModalHeader color={color}>{title}</ModalHeader>

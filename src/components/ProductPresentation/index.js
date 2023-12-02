@@ -4,6 +4,7 @@ import { BoxPresentation } from "../BoxPresentation";
 
 export const ProductPresentation = ({ props }) => {
   const { productPresentation } = props;
+  console.log(productPresentation);
   const { colorMode } = useColorModeGeneral();
   return (
     <Grid
@@ -36,7 +37,7 @@ export const ProductPresentation = ({ props }) => {
 
       <GridItem>
         <BoxPresentation
-          body={<Text>{productPresentation?.amount} unidades</Text>}
+          body={<Text>{productPresentation?.description}</Text>}
         />
       </GridItem>
 

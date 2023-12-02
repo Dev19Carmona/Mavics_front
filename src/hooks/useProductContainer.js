@@ -46,7 +46,7 @@ export const useProductContainer = () => {
   const settingsModalProductPresentation = useModalGeneral();
   const settingsModalProductDelete = useModalGeneral();
   const settingsModalProductSave = useModalGeneral();
-
+  const [sizesSelected, setSizesSelected] = useState([]);
   //-------Settings Modal (sizes/categories/suppliers)
   const settingsModalSize = useModalGeneral();
   const settingsModalCategory = useModalGeneral();
@@ -131,26 +131,26 @@ export const useProductContainer = () => {
   }, [Products]);
 
   const handleSubmitProductCreate = async (values, { resetForm }) => {
-    //settingsModalProductSave.onClose();
-    //setImageProduct();
+    settingsModalProductSave.onClose();
+    setImageProduct();
+    setSizesSelected([])
     try {
+      const sizes = JSON.parse(JSON.stringify(sizesSelected,["_id","amount"]))
       await productSave({
         variables: {
           data: {
             name: values.name,
             description: values.description,
+            image: imageProduct,
             price: values.price,
             supplierId: values.supplierId,
             categoryId: values.categoryId,
-            sizeId: values.sizeId,
+            sizes,
             gender: values.gender,
-            amount: values.amount,
-            image: imageProduct,
-            supplierId: values.supplierId,
           },
         },
       });
-      //resetForm();
+      resetForm();
     } catch (error) {
       console.log(error);
     }
@@ -320,6 +320,8 @@ export const useProductContainer = () => {
     getSizes,
     modalSettings,
     handleOpenAndCloseModal,
-    tabsDataSupplierCategorySize
+    tabsDataSupplierCategorySize,
+    sizesSelected, 
+    setSizesSelected
   };
 };

@@ -1,4 +1,5 @@
 import { CardDashboardRoutes } from "@/components/CardDashboardRoutes";
+import { TuComponente } from "@/components/TestComponent";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { useDashboard } from "@/hooks/useDashboard";
 import { Box, Flex, Grid } from "@chakra-ui/react";
@@ -41,7 +42,7 @@ export const DashboardContainer = () => {
             />
           ))}
         </Flex>
-        <Box></Box>
+        <Box><TuComponente/></Box>
         <Box></Box>
       </Grid>
     </Flex>

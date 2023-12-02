@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Text, Tooltip } from "@chakra-ui/react";
 import Image from "next/image";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { BiRectangle } from "react-icons/bi";
@@ -19,6 +19,7 @@ export const ProductCard = ({
 }) => {
   const { colorMode } = useColorModeGeneral();
   const { src, isIcon, icon, name, price, body, product } = data;
+  const sizesPicture = 79
   return (
     <Flex
       boxShadow={"md"}
@@ -26,14 +27,14 @@ export const ProductCard = ({
       justify={"center"}
       fontSize={"20"}
       direction={"column"}
-      p={3}
+      p={1}
       bg={colorMode === "dark" ? "box.dark" : "box.light"}
       rounded={"15px"}
       
     >
       <Flex
-        width={150}
-        height={150}
+        width={sizesPicture}
+        height={sizesPicture}
         alignSelf={"center"}
         rounded={"full"}
         overflow={"hidden"}
@@ -43,7 +44,7 @@ export const ProductCard = ({
         onClick={()=>{onClickProductPresentation(product)}}
       >
         {isIcon ? (
-          <Box fontSize={"150px"}>{icon}</Box>
+          <Box fontSize={`${sizesPicture}px`}>{icon}</Box>
         ) : (
             <Image
               src={src}

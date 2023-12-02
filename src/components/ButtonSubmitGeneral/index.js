@@ -7,6 +7,8 @@ export const ButtonSubmitGeneral = ({
   variant = "solid",
   onClick = () => {},
   title,
+  type = 'submit',
+  isDisabled = false, 
 }) => {
   return (
     <Button
@@ -16,9 +18,10 @@ export const ButtonSubmitGeneral = ({
       rightIcon={rightIcon}
       colorScheme={color}
       variant={variant}
-      type="submit"
+      type={type}
+      isDisabled={isDisabled}
     >
-      {title&&title}
+      {title && title}
     </Button>
   );
 };

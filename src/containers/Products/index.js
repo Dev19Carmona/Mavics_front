@@ -56,6 +56,8 @@ export const ProductsContainer = () => {
     modalSettings,
     handleOpenAndCloseModal,
     tabsDataSupplierCategorySize = {},
+    sizesSelected,
+    setSizesSelected,
   } = useProductContainer();
 
   const {
@@ -65,9 +67,8 @@ export const ProductsContainer = () => {
     settingsModalSupplier,
     settingsModalCategory,
     settingsModalSize,
-    
   } = modalSettings;
-  const { supplierData } = tabsDataSupplierCategorySize
+  const { supplierData } = tabsDataSupplierCategorySize;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -113,6 +114,8 @@ export const ProductsContainer = () => {
             getSuppliers,
             getCategories,
             getSizes,
+            sizesSelected,
+            setSizesSelected,
           }}
         />
       ),
@@ -153,7 +156,7 @@ export const ProductsContainer = () => {
     {
       id: "4",
       name: "suppliers",
-      body: (<TabsGeneral array={supplierData}/>),
+      body: <TabsGeneral array={supplierData} />,
       isOpen: settingsModalSupplier.isOpen,
       onClose: () => {
         handleOpenAndCloseModal(settingsModalSupplier);
@@ -190,7 +193,16 @@ export const ProductsContainer = () => {
       color: colorMode === "light" ? "header.light" : "header.dark",
     },
   ];
-  const modalDynamic = (body, isOpen, onClose, overlay, title, size, color, i) => (
+  const modalDynamic = (
+    body,
+    isOpen,
+    onClose,
+    overlay,
+    title,
+    size,
+    color,
+    i
+  ) => (
     <Box key={i}>
       <ModalGeneral
         body={body}
@@ -200,7 +212,6 @@ export const ProductsContainer = () => {
         title={title}
         size={size}
         color={color}
-        
       />
     </Box>
   );

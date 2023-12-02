@@ -10,11 +10,11 @@ export const products = gql`
   query Products($filter: productFilter) {
     products(filter: $filter) {
       _id
-      amount
       createdAt
       isAvailable
       isRemove
       name
+      description
       price
       supplier {
         _id
@@ -41,7 +41,6 @@ export const ProductSave = gql`
   mutation ProductSave($data: productData) {
     productSave(data: $data) {
       _id
-      amount
       createdAt
       isAvailable
       isRemove
@@ -72,7 +71,6 @@ export const Product_delete = gql`
   mutation Product_delete($id: String) {
     Product_delete(_id: $id) {
       _id
-      amount
       createdAt
       isAvailable
       isRemove

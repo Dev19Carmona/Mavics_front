@@ -4,25 +4,25 @@ export const fonts = {
 export const colors = {
   header: {
     dark: "#EAECEF",
-    light: "#1A202C",
+    light: "#000",
   },
   box: {
     dark: "#1A202C",
-    light: "#fff",
+    light: "#F0F0F0",
   },
   window: {
     dark: "#1D2738",
-    light: "#E2E8F0",
+    light: "#D3D3D3",
   },
   body: {
     dark: "#ddd",
-    light: "#111",
+    light: "#000",
   },
   tags: {
     light: "#1792a4",
     dark: "#f28f3f",
   },
   extra: "#319795",
-  fondo: "#1A202C",
+  fondo: "#6B6B6B",
 };
 export const iconSize = "27px";

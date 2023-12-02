@@ -25,7 +25,15 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 // });
 //"https://crm-back-x2m9.onrender.com/graphql"
 //"https://mas-copas-lounge-backend.onrender.com/graphql"
-
+const urlBackDevelopment = {
+  http:"http://localhost:4000/graphql",
+  ws:"ws://localhost:4000/graphql"
+}
+const urlBackProduction = {
+  http:"https://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
+  ws:"wss://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql"
+}
+const isDevBack = true
 const theme = extendTheme({
   fonts,
   colors,
@@ -42,14 +50,14 @@ const authLink = setContext((_, { headers }) => {
   };
 }).concat(
   createUploadLink({
-    uri: "https://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
+    uri: isDevBack ? urlBackDevelopment.http : urlBackProduction.http,
   })
 );
 //hola
 const wsLink = new GraphQLWsLink(
   createClient({
     webSocketImpl: WebSocket,
-    url: "ws://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
+    url: isDevBack ? urlBackDevelopment.ws : urlBackProduction.ws,
   })
 );
 
