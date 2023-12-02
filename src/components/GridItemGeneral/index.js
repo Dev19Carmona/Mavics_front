@@ -1,4 +1,5 @@
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
+import { Flex, GridItem } from "@chakra-ui/react";
 
 export const GridItemGeneral = ({body}) => {
   const { colorMode } = useColorModeGeneral();

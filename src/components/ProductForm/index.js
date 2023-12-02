@@ -64,7 +64,7 @@ export const ProductForm = ({ props }) => {
       getLazyQuery(getSuppliers, "suppliers", setSuppliers);
     if (categories.length === 0)
       getLazyQuery(getCategories, "categories", setCategories);
-  }, [getSuppliers, setCategories, setSuppliers, getCategories]);
+  }, [getSuppliers, setCategories, setSuppliers, getCategories, suppliers, categories]);
 
   const handleKeyPress = (e) => {
     const key = e.key;
@@ -389,8 +389,8 @@ export const ProductForm = ({ props }) => {
                             <Th>Cantidad</Th>
                           </Tr>
                         </Thead>
-                        {sizesSelected.map((sizeSelected) => (
-                          <Tbody>
+                        {sizesSelected.map((sizeSelected, i) => (
+                          <Tbody key={i}>
                             <Tr>
                               <Td>{sizeSelected.name}</Td>
                               <Td>
