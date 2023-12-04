@@ -1,5 +1,6 @@
 import { CardDashboardRoutes } from "@/components/CardDashboardRoutes";
 import { TuComponente } from "@/components/TestComponent";
+import { WaterMark } from "@/components/WaterMark";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { useDashboard } from "@/hooks/useDashboard";
 import { Box, Flex, Grid } from "@chakra-ui/react";
@@ -20,7 +21,10 @@ export const DashboardContainer = () => {
       borderTopLeftRadius={9}
       justifyContent={"center"}
       alignItems={"center"}
+      position={"relative"}
     >
+      <WaterMark />
+
       <Grid h={"full"} w={"full"} templateRows={"repeat(3, 1fr)"}>
         <Flex
           gap={10}
@@ -42,7 +46,7 @@ export const DashboardContainer = () => {
             />
           ))}
         </Flex>
-        <Box><TuComponente/></Box>
+        <Box></Box>
         <Box></Box>
       </Grid>
     </Flex>

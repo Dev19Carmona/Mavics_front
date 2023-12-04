@@ -1,19 +1,27 @@
 import { ButtonActionsGeneral } from "@/components/ButtonActionsGeneral";
+import { InputGeneral } from "@/components/InputGeneral";
 import { LoaderGeneral } from "@/components/LoaderGeneral";
 import { ModalGeneral } from "@/components/ModalGeneral";
-import { ProductCard } from "@/components/ProductCard";
 import { ProductForm } from "@/components/ProductForm";
 import { ProductPresentation } from "@/components/ProductPresentation";
-import { ProductSearch } from "@/components/ProductSearch";
-import { ProductsFilterTagsSearch } from "@/components/ProductsFilterTagsSearch";
 import { ProductsGrid } from "@/components/ProductsGrid";
 import { TabsGeneral } from "@/components/TabsGeneral";
-import { TagCard } from "@/components/TagCard";
+import { WaterMark } from "@/components/WaterMark";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { useProductContainer } from "@/hooks/useProductContainer";
-import { Box, Flex, Grid, SimpleGrid, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Image,
+  Input,
+  SimpleGrid,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
+import { GiMagnifyingGlass } from "react-icons/gi";
 import { TbCategory, TbRulerMeasure } from "react-icons/tb";
 
 export const ProductsContainer = () => {
@@ -68,7 +76,7 @@ export const ProductsContainer = () => {
     settingsModalCategory,
     settingsModalSize,
   } = modalSettings;
-  const { supplierData } = tabsDataSupplierCategorySize;
+  const { supplierData, categoryData, sizeData } = tabsDataSupplierCategorySize;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -138,7 +146,7 @@ export const ProductsContainer = () => {
       },
       overlay: settingsModalProductPresentation.overlay,
       title: "",
-      size: "full",
+      size: "xl",
     },
     {
       id: "3",
@@ -169,7 +177,7 @@ export const ProductsContainer = () => {
     {
       id: "5",
       name: "categories",
-      body: "sin body",
+      body: <TabsGeneral array={categoryData} />,
       isOpen: settingsModalCategory.isOpen,
       onClose: () => {
         handleOpenAndCloseModal(settingsModalCategory);
@@ -182,7 +190,7 @@ export const ProductsContainer = () => {
     {
       id: "6",
       name: "sizes",
-      body: "sin body",
+      body: <TabsGeneral array={sizeData} />,
       isOpen: settingsModalSize.isOpen,
       onClose: () => {
         handleOpenAndCloseModal(settingsModalSize);
@@ -235,9 +243,31 @@ export const ProductsContainer = () => {
         }
         borderTopLeftRadius={9}
         justifyContent={"center"}
+        position={"relative"}
       >
+        <WaterMark />
         <Flex gap={5} h={"100%"} w={"full"} direction={"column"}>
-          <ProductSearch
+          <Box>
+            <InputGeneral
+              left={
+                <Input
+                  width={"full"}
+                  _focus={{ border: "1px solid teal" }}
+                  _hover={{ border: "2px solid gray" }}
+                  _selected={false}
+                  // border={"0.2px solid gray"}
+                  pr="4.5rem"
+                  placeholder="Buscar..."
+                  onChange={(e) => {
+                    handleSearchProduct(e.target.value);
+                    //handleFilterProducts({ key: "name", value: e.target.value });
+                  }}
+                />
+              }
+              right={<GiMagnifyingGlass />}
+            />
+          </Box>
+          {/* <ProductSearch
             getSuppliers={getSuppliers}
             suppliers={suppliersState}
             handleSearchProduct={handleSearchProduct}
@@ -251,7 +281,7 @@ export const ProductsContainer = () => {
             handleFilterProducts={handleFilterProducts}
             getCategories={getCategories}
             getSizes={getSizes}
-          />
+          /> */}
           <ProductsGrid
             handleOpenModalProductSave={handleOpenModalProductSave}
             rightClickOptions={rightClickOptions}
@@ -281,7 +311,7 @@ export const ProductsContainer = () => {
                 borderRadius={9}
                 padding={2}
                 onClick={() => {
-                  handleOpenAndCloseModal(button.settingsModal);
+                  handleOpenAndCloseModal(button.settingsModal, button.key);
                 }}
               >
                 {button.icon}

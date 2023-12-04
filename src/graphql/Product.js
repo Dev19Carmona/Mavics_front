@@ -15,6 +15,11 @@ export const products = gql`
       isRemove
       name
       description
+      sizes {
+        _id
+        amount
+        name
+      }
       price
       supplier {
         _id

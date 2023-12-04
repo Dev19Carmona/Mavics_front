@@ -1,13 +1,13 @@
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { Flex } from "@chakra-ui/react";
 
-export const BoxPresentation = ({ body }) => {
+export const BoxPresentation = ({ body, justify = 'center' }) => {
   const { colorMode } = useColorModeGeneral();
   return (
     <Flex
       bg={colorMode === "dark" ? "box.dark" : "box.light"}
-      justifyContent={"center"}
-      alignItems={"center"}
+      justifyContent={justify}
+      alignItems={justify}
       // bg="red"
       h={"full"}
       gap={2}

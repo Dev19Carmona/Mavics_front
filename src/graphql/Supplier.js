@@ -6,7 +6,6 @@ export const supplierSave = gql`
       _id
       isActive
       isRemove
-      manager
       name
       nit
       phone

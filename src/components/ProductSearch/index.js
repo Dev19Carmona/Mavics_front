@@ -26,10 +26,7 @@ export const ProductSearch = ({
   const [categoriesState, setCategoriesState] = useState([]);
   const [sizesState, setSizesState] = useState([]);
 
-  const openSizes = async () => {
-    let sizes = await getSuppliers();
-    sizes = sizes.data;
-  };
+
 
   return (
     <Flex

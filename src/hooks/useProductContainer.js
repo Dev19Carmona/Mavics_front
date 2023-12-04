@@ -3,19 +3,22 @@ import { Tags } from "@/graphql/Tag";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { useModalGeneral } from "./Generals/useModalGeneral";
-import { suppliers } from "@/graphql/Supplier";
+import { supplierSave, suppliers } from "@/graphql/Supplier";
 import { Categories } from "@/graphql/Category";
 import { AiFillDelete } from "react-icons/ai";
-import { LuInspect } from "react-icons/lu";
-import { TIME_LOADING } from "../../config/_constants";
+import { LuCopyCheck, LuInspect } from "react-icons/lu";
 import { Sizes } from "@/graphql/Size";
 import { SupplierForm } from "@/components/SupplierForm";
 import { TableGeneral } from "@/components/TableGeneral";
+import { addField, getLazyQuery } from "../../config/_functions";
 export const useProductContainer = () => {
-  const [filterData, setFilterData] = useState({})
+  const [filterData, setFilterData] = useState({});
   const [productPresentation, setProductPresentation] = useState({});
   const [productId, setProductId] = useState("");
   const [suppliersState, setSuppliersState] = useState([]);
+  console.log(suppliersState);
+  const [categoriesState, setCategoriesState] = useState([]);
+  const [sizesState, setSizesState] = useState([]);
   const [productsState, setProductsState] = useState();
   const [productEdit, setProductEdit] = useState([]);
   const [productFilter, setProductFilter] = useState("");
@@ -28,11 +31,17 @@ export const useProductContainer = () => {
     _id: "",
     name: "",
     price: "",
-    amount: "",
     supplierId: "",
     categoryId: "",
     sizeId: "",
     gender: "",
+  });
+  const [supplierData, setSupplierData] = useState({
+    _id: "",
+    name: "",
+    phone: "",
+    nit: "",
+    responsible: "",
   });
   const {
     isOpen,
@@ -57,8 +66,8 @@ export const useProductContainer = () => {
     settingsModalSupplier,
     settingsModalProductPresentation,
     settingsModalProductDelete,
-    settingsModalProductSave
-  }
+    settingsModalProductSave,
+  };
 
   const [getTags, { data: tags, loading: tagsLoad, error: tagsError }] =
     useLazyQuery(Tags);
@@ -87,8 +96,18 @@ export const useProductContainer = () => {
         },
       ],
     });
+  const [
+    SupplierSave,
+    { data: newSupplier, loading: loadNewSupplier, error: errorNewSupplier },
+  ] = useMutation(supplierSave, {
+    refetchQueries: [
+      {
+        query: suppliers,
+      },
+    ],
+  });
   const initialValuesProduct = productData;
-
+  const initialValuesSupplier = supplierData;
   const handleSearchProduct = (search) => {
     const regex = new RegExp(search, "i");
     if (search !== "") {
@@ -131,11 +150,13 @@ export const useProductContainer = () => {
   }, [Products]);
 
   const handleSubmitProductCreate = async (values, { resetForm }) => {
-    settingsModalProductSave.onClose();
-    setImageProduct();
-    setSizesSelected([])
     try {
-      const sizes = JSON.parse(JSON.stringify(sizesSelected,["_id","amount"]))
+      settingsModalProductSave.onClose();
+      setImageProduct();
+      setSizesSelected([]);
+      const sizes = JSON.parse(
+        JSON.stringify(sizesSelected, ["_id", "amount", "name"])
+      );
       await productSave({
         variables: {
           data: {
@@ -151,6 +172,32 @@ export const useProductContainer = () => {
         },
       });
       resetForm();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleSubmitSupplierCreate = async (values, { resetForm }) => {
+    try {
+      const newSupplier = await SupplierSave({
+        variables: {
+          data: {
+            name: values.name,
+            nit: values.nit,
+            phone: values.phone,
+          },
+        },
+      });
+      
+      if(newSupplier){
+        setSuppliersState(prevState => {
+          const copy = [...prevState]
+          console.log(copy);
+          copy.push(newSupplier)
+          console.log(copy);
+          return copy
+        })
+        resetForm()
+      };
     } catch (error) {
       console.log(error);
     }
@@ -171,15 +218,35 @@ export const useProductContainer = () => {
     settingsModalProductDelete.onOpen();
   };
 
-  const handleOpenAndCloseModal = (settings) => {
-    const {isOpen} = settings;
+  const handleOpenAndCloseModal = (settings, keyQuery = []) => {
+    const { isOpen } = settings;
+    //"suppliers", "categories", "sizes"
+    const queryList = [
+      {
+        key:"suppliers",
+        get:getSuppliers,
+        set: setSuppliersState
+      },
+      {
+        key:"categories",
+        get:getCategories,
+        set: setCategoriesState
+      },
+      {
+        key:"sizes",
+        get:getSizes,
+        set: setSizesState
+      },
+    ]
+    queryList.map(object => {
+      const { key, get, set } = object
+      if(keyQuery.includes(key)) return getLazyQuery(get, key, set)
+    })
     if (!isOpen) {
       settings.setOverlay(<OverlayOne />);
       settings.onOpen();
-    } else settings.onClose()
-    
-  }
-
+    } else settings.onClose();
+  };
 
   const handleSaveImageProduct = (event) => {
     if (event?.target?.validity && event?.target?.files) {
@@ -265,23 +332,79 @@ export const useProductContainer = () => {
     setProductsState(Products?.products);
   };
   const handleFilterProducts = (data) => {
-    const {key, value} = data
+    const { key, value } = data;
     const filterObject = filterData;
-    filterObject[key] = value
-    setFilterData(filterObject)
-  }
+    filterObject[key] = value;
+    setFilterData(filterObject);
+  };
+
+  const indexSupplierTable = ["Nombre", "Nit", "Telefono"]
+  const valuesSupplierTable = ["name", "nit", "phone"]
+
+  const indexCategoryTable = ["Nombre", "ID"];
+  const valuesCategoryTable = ["name", "_id"];
   const tabsDataSupplierCategorySize = {
-    supplierData:[
+    supplierData: [
       {
-        name: "Proveedores",
-        body: <TableGeneral/>
+        name: "Lista",
+        body: (
+          <TableGeneral
+            index={indexSupplierTable}
+            data={suppliersState}
+            values={valuesSupplierTable}
+          />
+        ),
       },
       {
-        name: "Crear Proveedor",
-        body: <SupplierForm/>
+        name: "Crear",
+        body: (
+          <SupplierForm
+            props={{ initialValuesSupplier, handleSubmitSupplierCreate }}
+          />
+        ),
       },
-    ]
-  }
+    ],
+    categoryData: [
+      {
+        name: "Lista",
+        body: (
+          <TableGeneral
+            index={indexCategoryTable}
+            data={categoriesState}
+            values={valuesCategoryTable}
+          />
+        ),
+      },
+      {
+        name: "Crear",
+        body: (
+          <SupplierForm
+            props={{ initialValuesSupplier, handleSubmitSupplierCreate }}
+          />
+        ),
+      },
+    ],
+    sizeData: [
+      {
+        name: "Lista",
+        body: (
+          <TableGeneral
+            index={indexCategoryTable}
+            data={sizesState}
+            values={valuesCategoryTable}
+          />
+        ),
+      },
+      {
+        name: "Crear",
+        body: (
+          <SupplierForm
+            props={{ initialValuesSupplier, handleSubmitSupplierCreate }}
+          />
+        ),
+      },
+    ],
+  };
   return {
     tags,
     handleSearchProduct,
@@ -321,7 +444,7 @@ export const useProductContainer = () => {
     modalSettings,
     handleOpenAndCloseModal,
     tabsDataSupplierCategorySize,
-    sizesSelected, 
-    setSizesSelected
+    sizesSelected,
+    setSizesSelected,
   };
 };

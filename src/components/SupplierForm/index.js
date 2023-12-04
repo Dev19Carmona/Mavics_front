@@ -15,11 +15,11 @@ import {
 } from "react-icons/fa";
 
 export const SupplierForm = ({ props }) => {
-  // const {
-  //   //handleSubmitProductCreate,
-  //   //initialValuesProduct,
-  // } = props;
-
+  const {
+    handleSubmitSupplierCreate,
+    initialValuesSupplier,
+  } = props;
+console.log(initialValuesSupplier);
   const { colorMode } = useColorModeGeneral();
 
 
@@ -34,8 +34,8 @@ export const SupplierForm = ({ props }) => {
   return (
     <Box userSelect="none" margin={4} p={4} borderRadius={9}>
       <Formik
-        //onSubmit={handleSubmitProductCreate}
-        //initialValues={initialValuesProduct}
+        onSubmit={handleSubmitSupplierCreate}
+        initialValues={initialValuesSupplier}
       >
         {({ setFieldValue, values }) => (
           <Form>
@@ -53,7 +53,7 @@ export const SupplierForm = ({ props }) => {
                   borderRadius={9}
                 >
                   <Flex justifyContent={"space-between"}>
-                    <Text>Datos Generales:</Text>
+                    <Text>Datos:</Text>
                     <FaListUl fontSize={20} />
                   </Flex>
                   <FormControl id="name">
@@ -81,16 +81,6 @@ export const SupplierForm = ({ props }) => {
                       type="text"
                       placeholder="NIT"
                       required={false}
-                      onKeyPress={handleKeyPress}
-                    />
-                  </FormControl>
-                  <FormControl id="manager">
-                    <Field
-                      name="manager"
-                      as={Input}
-                      type="text"
-                      placeholder="Nombre del encargado"
-                      required={true}
                       onKeyPress={handleKeyPress}
                     />
                   </FormControl>

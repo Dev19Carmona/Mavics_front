@@ -3,31 +3,35 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
 
-export const TableGeneral = ({ array = [] }) => {
+export const TableGeneral = ({ index = [], data = [], values = [] }) => {
   const { colorMode } = useColorModeGeneral();
+  const rows = (element) => {
+    return values.map((val) => <Td>{element[val]}</Td>);
+  };
   return (
     <TableContainer>
-      <Table size="sm">
+      <Table
+        colorScheme={colorMode === "dark" ? "box.dark" : "box.light"}
+        variant="unstyled"
+        size="sm"
+      >
         <Thead>
           <Tr>
-            <Th>Talla</Th>
-            <Th>Cantidad</Th>
+            {index.map((i) => (
+              <Th>{i}</Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>38</Td>
-            <Td>10</Td>
-          </Tr>
-          
+          {data.map((element) => (
+            <Tr>{rows(element)}</Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>
