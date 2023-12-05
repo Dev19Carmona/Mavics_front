@@ -14,3 +14,18 @@ export const Sizes = gql`
     }
   }
 `;
+
+export const SizeSave = gql`
+  mutation SizeSave($data: sizeData) {
+    sizeSave(data: $data) {
+      _id
+      categories {
+        _id
+        isRemove
+        name
+      }
+      isRemove
+      name
+    }
+  }
+`;

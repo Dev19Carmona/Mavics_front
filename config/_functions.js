@@ -7,6 +7,7 @@ export const cutString = (string) => {
 };
 
 export const getLazyQuery = async (get, type, set, variables = {}) => {
+try {
   let data = await get(variables);
   data = data.data[type];
   set((prevState) => {
@@ -15,6 +16,10 @@ export const getLazyQuery = async (get, type, set, variables = {}) => {
     //if (prevCopy.length === 0 && data.length > 0) prevCopy.push(...data);
     return prevCopy;
   });
+} catch (error) {
+  console.log(error);
+  return error
+}
 };
 
 export const addField = (set = () => {}, field = "", value = "") =>{

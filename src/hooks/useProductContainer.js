@@ -4,19 +4,20 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { useModalGeneral } from "./Generals/useModalGeneral";
 import { supplierSave, suppliers } from "@/graphql/Supplier";
-import { Categories } from "@/graphql/Category";
+import { Categories, CategorySave } from "@/graphql/Category";
 import { AiFillDelete } from "react-icons/ai";
 import { LuCopyCheck, LuInspect } from "react-icons/lu";
-import { Sizes } from "@/graphql/Size";
+import { SizeSave, Sizes } from "@/graphql/Size";
 import { SupplierForm } from "@/components/SupplierForm";
 import { TableGeneral } from "@/components/TableGeneral";
 import { addField, getLazyQuery } from "../../config/_functions";
+import { CategoryForm } from "@/components/CategoryForm";
+import { SizeForm } from "@/components/SizeForm";
 export const useProductContainer = () => {
   const [filterData, setFilterData] = useState({});
   const [productPresentation, setProductPresentation] = useState({});
   const [productId, setProductId] = useState("");
   const [suppliersState, setSuppliersState] = useState([]);
-  console.log(suppliersState);
   const [categoriesState, setCategoriesState] = useState([]);
   const [sizesState, setSizesState] = useState([]);
   const [productsState, setProductsState] = useState();
@@ -26,6 +27,8 @@ export const useProductContainer = () => {
   const [alertSearch, setAlertSearch] = useState(false);
   const [filter, setFilter] = useState({});
   const [imageProduct, setImageProduct] = useState();
+  const [categorySelected, setCategorySelected] = useState([]);
+  console.log(categorySelected);
   const [tagsSelected, setTagsSelected] = useState([]);
   const [productData, setProductData] = useState({
     _id: "",
@@ -42,6 +45,17 @@ export const useProductContainer = () => {
     phone: "",
     nit: "",
     responsible: "",
+  });
+
+  const [categoryData, setCategoryData] = useState({
+    _id: "",
+    name: "",
+  });
+
+  const [sizeData, setSizeData] = useState({
+    _id: "",
+    name: "",
+    categoryId: "",
   });
   const {
     isOpen,
@@ -106,8 +120,30 @@ export const useProductContainer = () => {
       },
     ],
   });
+  const [
+    categorySave,
+    { data: newCategory, loading: loadNewCategory, error: errorNewCategory },
+  ] = useMutation(CategorySave, {
+    refetchQueries: [
+      {
+        query: Categories,
+      },
+    ],
+  });
+  const [
+    sizeSave,
+    { data: newSize, loading: loadNewSize, error: errorNewSize },
+  ] = useMutation(SizeSave, {
+    refetchQueries: [
+      {
+        query: Sizes,
+      },
+    ],
+  });
   const initialValuesProduct = productData;
   const initialValuesSupplier = supplierData;
+  const initialValuesCategory = categoryData;
+  const initialValuesSize = sizeData;
   const handleSearchProduct = (search) => {
     const regex = new RegExp(search, "i");
     if (search !== "") {
@@ -187,12 +223,62 @@ export const useProductContainer = () => {
           },
         },
       });
-      
-      if(newSupplier){
-        setSuppliersState(prevState => {
+
+      if (newSupplier) {
+        setSuppliersState((prevState) => {
+          const copy = [...prevState];
+          console.log(copy);
+          copy.push(newSupplier);
+          console.log(copy);
+          return copy;
+        });
+        resetForm();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleSubmitCategoryCreate = async (values, { resetForm }) => {
+    try {
+      const newCategory = await categorySave({
+        variables: {
+          data: {
+            name: values.name,
+          },
+        },
+      });
+
+      if (newCategory) {
+        setCategoriesState((prevState) => {
+          const copy = [...prevState];
+          console.log(copy);
+          copy.push(newCategory);
+          console.log(copy);
+          return copy;
+        });
+        resetForm();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleSubmitSizeCreate = async (values, { resetForm }) => {
+    try {
+      console.log(values);
+      const newSize = await sizeSave({
+        variables: {
+          data: {
+            name: values.name,
+            categoryIds: categorySelected
+          },
+        },
+      });
+
+      if(newSize){
+        setSizesState(prevState => {
           const copy = [...prevState]
           console.log(copy);
-          copy.push(newSupplier)
+          copy.push(newSize)
           console.log(copy);
           return copy
         })
@@ -223,25 +309,25 @@ export const useProductContainer = () => {
     //"suppliers", "categories", "sizes"
     const queryList = [
       {
-        key:"suppliers",
-        get:getSuppliers,
-        set: setSuppliersState
+        key: "suppliers",
+        get: getSuppliers,
+        set: setSuppliersState,
       },
       {
-        key:"categories",
-        get:getCategories,
-        set: setCategoriesState
+        key: "categories",
+        get: getCategories,
+        set: setCategoriesState,
       },
       {
-        key:"sizes",
-        get:getSizes,
-        set: setSizesState
+        key: "sizes",
+        get: getSizes,
+        set: setSizesState,
       },
-    ]
-    queryList.map(object => {
-      const { key, get, set } = object
-      if(keyQuery.includes(key)) return getLazyQuery(get, key, set)
-    })
+    ];
+    queryList.map((object) => {
+      const { key, get, set } = object;
+      if (keyQuery.includes(key)) return getLazyQuery(get, key, set);
+    });
     if (!isOpen) {
       settings.setOverlay(<OverlayOne />);
       settings.onOpen();
@@ -338,8 +424,8 @@ export const useProductContainer = () => {
     setFilterData(filterObject);
   };
 
-  const indexSupplierTable = ["Nombre", "Nit", "Telefono"]
-  const valuesSupplierTable = ["name", "nit", "phone"]
+  const indexSupplierTable = ["Nombre", "Nit", "Telefono"];
+  const valuesSupplierTable = ["name", "nit", "phone"];
 
   const indexCategoryTable = ["Nombre", "ID"];
   const valuesCategoryTable = ["name", "_id"];
@@ -378,8 +464,8 @@ export const useProductContainer = () => {
       {
         name: "Crear",
         body: (
-          <SupplierForm
-            props={{ initialValuesSupplier, handleSubmitSupplierCreate }}
+          <CategoryForm
+            props={{ initialValuesCategory, handleSubmitCategoryCreate }}
           />
         ),
       },
@@ -398,8 +484,14 @@ export const useProductContainer = () => {
       {
         name: "Crear",
         body: (
-          <SupplierForm
-            props={{ initialValuesSupplier, handleSubmitSupplierCreate }}
+          <SizeForm
+            props={{
+              initialValuesSize,
+              handleSubmitSizeCreate,
+              getCategories,
+              setCategorySelected,
+              categorySelected,
+            }}
           />
         ),
       },
