@@ -1,6 +1,13 @@
 export const fonts = {
   body: `"League Spartan", sans-serif`,
+  appName: {
+    a: `"Pacifico", cursive`,
+    b: `"Dancing Script", cursive`,
+    c: `"Great Vibes", cursive`,
+    d: `"Courgette", cursive`,
+  }
 };
+export const appName = 'Mavics App'
 export const colors = {
   header: {
     dark: "#EAECEF",
