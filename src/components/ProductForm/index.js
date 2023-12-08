@@ -24,6 +24,7 @@ CiCirclePlus;
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { TagSelect } from "../TagSelect";
 import {
+  FaCheckSquare,
   FaGenderless,
   FaImage,
   FaListUl,
@@ -148,7 +149,13 @@ export const ProductForm = ({ props }) => {
                 >
                   <Flex justifyContent={"space-between"}>
                     <Text>Datos Generales:</Text>
-                    <FaListUl fontSize={20} />
+                    {values.name !== "" &&
+                    values.description !== "" &&
+                    values.price !== "" ? (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    ) : (
+                      <FaListUl fontSize={20} />
+                    )}
                   </Flex>
                   <FormControl id="name">
                     <Field
@@ -168,7 +175,6 @@ export const ProductForm = ({ props }) => {
                       required={false}
                     />
                   </FormControl>
-
                   <FormControl id="price">
                     <Field
                       name="price"
@@ -196,42 +202,46 @@ export const ProductForm = ({ props }) => {
                     ) : (
                       <Text>Subir imagen del producto:</Text>
                     )}
-                    <FaImage fontSize={20} />
+                    {imageProduct ? (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    ) : (
+                      <FaImage fontSize={20} />
+                    )}
                   </Flex>
-                  
+
                   <Flex className="product-container">
-                  {imageProduct && (
-                    //<Collapse in={isOpen} animateOpacity>
-                    <Flex
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      //position="absolute"
-                      //className="product-preview"
-                    >
+                    {imageProduct && (
+                      //<Collapse in={isOpen} animateOpacity>
                       <Flex
-                        borderRadius={9}
                         justifyContent={"center"}
                         alignItems={"center"}
-                        gap={2}
-                        flexDir={"column"}
-                        position={"relative"}
-                        left={20}
-                        bottom={4}
-                        boxShadow="xl"
-                        rounded={"full"}
+                        //position="absolute"
+                        //className="product-preview"
                       >
-                        <Image
+                        <Flex
+                          borderRadius={9}
+                          justifyContent={"center"}
+                          alignItems={"center"}
+                          gap={2}
+                          flexDir={"column"}
+                          position={"relative"}
+                          left={20}
+                          bottom={4}
+                          boxShadow="xl"
                           rounded={"full"}
-                          src={URL.createObjectURL(imageProduct)}
-                          alt="brandPreview"
-                          objectFit="contain"
-                          width={90}
-                          height={90}
-                        />
+                        >
+                          <Image
+                            rounded={"full"}
+                            src={URL.createObjectURL(imageProduct)}
+                            alt="brandPreview"
+                            objectFit="contain"
+                            width={90}
+                            height={90}
+                          />
+                        </Flex>
                       </Flex>
-                    </Flex>
-                    //</Collapse>
-                  )}
+                      //</Collapse>
+                    )}
                     <input
                       type="file"
                       id="image"
@@ -259,7 +269,6 @@ export const ProductForm = ({ props }) => {
                       </label>
                     </Flex>
                   </Flex>
-                  
                 </Flex>
               </GridItem>
 
@@ -273,7 +282,11 @@ export const ProductForm = ({ props }) => {
                 >
                   <Flex justifyContent={"space-between"}>
                     <Text>Genero:</Text>
-                    <FaGenderless fontSize={20} />
+                    {values.gender === "" ? (
+                      <FaGenderless fontSize={20} />
+                    ) : (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    )}
                   </Flex>
                   <FormControl id="gender">
                     <Field
@@ -292,7 +305,11 @@ export const ProductForm = ({ props }) => {
 
                   <Flex justifyContent={"space-between"}>
                     <Text>Proveedores:</Text>
-                    <FaUsers fontSize={20} />
+                    {values.supplierId === "" ? (
+                      <FaUsers fontSize={20} />
+                    ) : (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    )}
                   </Flex>
                   <FormControl id="supplierId">
                     <Field
@@ -311,7 +328,12 @@ export const ProductForm = ({ props }) => {
 
                   <Flex justifyContent={"space-between"}>
                     <Text>Categorias:</Text>
-                    <TbCategory fontSize={20} />
+                    {values.categoryId === "" ? (
+                      <TbCategory fontSize={20} />
+                    ) : (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    )}
+                    
                   </Flex>
                   <FormControl id="categoryId">
                     <Field
@@ -347,8 +369,15 @@ export const ProductForm = ({ props }) => {
                     }
                     justifyContent={"space-between"}
                   >
-                    <Text>Tallas:</Text>
-                    <TbRulerMeasure fontSize={20} />
+                    <Text color={!values.categoryId || sizes.length === 0
+                        ? "gray"
+                        : "black"}>Tallas:</Text>
+                    {values.sizeId === "" ? (
+                      <TbRulerMeasure fontSize={20} />
+                    ) : (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    )}
+                    
                   </Flex>
 
                   <FormControl id="sizeId">
@@ -420,8 +449,6 @@ export const ProductForm = ({ props }) => {
                               </Td>
                             </Tr>
                           </Tbody>
-
-           
                         ))}
                       </Table>
                     </TableContainer>

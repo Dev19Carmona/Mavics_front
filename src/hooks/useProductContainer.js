@@ -28,7 +28,6 @@ export const useProductContainer = () => {
   const [filter, setFilter] = useState({});
   const [imageProduct, setImageProduct] = useState();
   const [categorySelected, setCategorySelected] = useState([]);
-  console.log(categorySelected);
   const [tagsSelected, setTagsSelected] = useState([]);
   const [productData, setProductData] = useState({
     _id: "",
@@ -227,9 +226,7 @@ export const useProductContainer = () => {
       if (newSupplier) {
         setSuppliersState((prevState) => {
           const copy = [...prevState];
-          console.log(copy);
           copy.push(newSupplier);
-          console.log(copy);
           return copy;
         });
         resetForm();
@@ -251,9 +248,7 @@ export const useProductContainer = () => {
       if (newCategory) {
         setCategoriesState((prevState) => {
           const copy = [...prevState];
-          console.log(copy);
           copy.push(newCategory);
-          console.log(copy);
           return copy;
         });
         resetForm();
@@ -264,12 +259,17 @@ export const useProductContainer = () => {
   };
   const handleSubmitSizeCreate = async (values, { resetForm }) => {
     try {
-      console.log(values);
+
+      const categoryIds = categorySelected.reduce((acc, element) => {
+        acc.push(element._id)
+        return acc
+      },[])
+
       const newSize = await sizeSave({
         variables: {
           data: {
             name: values.name,
-            categoryIds: categorySelected
+            categoryIds
           },
         },
       });
@@ -277,11 +277,10 @@ export const useProductContainer = () => {
       if(newSize){
         setSizesState(prevState => {
           const copy = [...prevState]
-          console.log(copy);
           copy.push(newSize)
-          console.log(copy);
           return copy
         })
+        setCategorySelected([])
         resetForm()
       };
     } catch (error) {

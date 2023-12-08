@@ -10,7 +10,7 @@ import {
 import { ButtonSubmitGeneral } from "../ButtonSubmitGeneral";
 import { Field, Form, Formik } from "formik";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
-import { FaListUl } from "react-icons/fa";
+import { FaCheckSquare, FaListUl } from "react-icons/fa";
 
 export const CategoryForm = ({ props }) => {
   const { initialValuesCategory, handleSubmitCategoryCreate } = props;
@@ -22,7 +22,9 @@ export const CategoryForm = ({ props }) => {
       e.preventDefault();
     }
   };
+const validations = () => {
 
+}
   return (
     <Box userSelect="none" margin={4} p={4} borderRadius={9}>
       <Formik
@@ -46,7 +48,11 @@ export const CategoryForm = ({ props }) => {
                 >
                   <Flex justifyContent={"space-between"}>
                     <Text>Datos:</Text>
-                    <FaListUl fontSize={20} />
+                    {
+                      values.name === ''?
+                    <FaListUl fontSize={20} />:
+                    <FaCheckSquare fontSize={20} color="teal"/> 
+                    }
                   </Flex>
                   <FormControl id="name">
                     <Field

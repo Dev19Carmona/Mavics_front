@@ -11,6 +11,7 @@ import { ButtonSubmitGeneral } from "../ButtonSubmitGeneral";
 import { Field, Form, Formik } from "formik";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import {
+  FaCheckSquare,
   FaListUl,
 } from "react-icons/fa";
 
@@ -19,7 +20,6 @@ export const SupplierForm = ({ props }) => {
     handleSubmitSupplierCreate,
     initialValuesSupplier,
   } = props;
-console.log(initialValuesSupplier);
   const { colorMode } = useColorModeGeneral();
 
 
@@ -54,7 +54,13 @@ console.log(initialValuesSupplier);
                 >
                   <Flex justifyContent={"space-between"}>
                     <Text>Datos:</Text>
-                    <FaListUl fontSize={20} />
+                    {values.name !== "" &&
+                    values.phone !== "" &&
+                    values.nit !== "" ? (
+                      <FaCheckSquare fontSize={20} color="teal" />
+                    ) : (
+                      <FaListUl fontSize={20} />
+                    )}
                   </Flex>
                   <FormControl id="name">
                     <Field
