@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Container, keyframes } from "@chakra-ui/react";
+import { Box, Text, Container, keyframes, Image } from "@chakra-ui/react";
 import { appName, fonts } from "../../../config/_disappointed";
 import { motion } from 'framer-motion';
 

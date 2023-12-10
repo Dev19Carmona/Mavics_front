@@ -186,13 +186,10 @@ export const useProductContainer = () => {
 
   const handleSubmitProductCreate = async (values, { resetForm }) => {
     try {
-      settingsModalProductSave.onClose();
-      setImageProduct();
-      setSizesSelected([]);
       const sizes = JSON.parse(
         JSON.stringify(sizesSelected, ["_id", "amount", "name"])
       );
-      await productSave({
+      const newProduct = await productSave({
         variables: {
           data: {
             name: values.name,
@@ -206,7 +203,12 @@ export const useProductContainer = () => {
           },
         },
       });
-      resetForm();
+      if (newProduct) {
+        setImageProduct();
+        setSizesSelected([]);
+        resetForm();
+        settingsModalProductSave.onClose();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -259,30 +261,29 @@ export const useProductContainer = () => {
   };
   const handleSubmitSizeCreate = async (values, { resetForm }) => {
     try {
-
       const categoryIds = categorySelected.reduce((acc, element) => {
-        acc.push(element._id)
-        return acc
-      },[])
+        acc.push(element._id);
+        return acc;
+      }, []);
 
       const newSize = await sizeSave({
         variables: {
           data: {
             name: values.name,
-            categoryIds
+            categoryIds,
           },
         },
       });
 
-      if(newSize){
-        setSizesState(prevState => {
-          const copy = [...prevState]
-          copy.push(newSize)
-          return copy
-        })
-        setCategorySelected([])
-        resetForm()
-      };
+      if (newSize) {
+        setSizesState((prevState) => {
+          const copy = [...prevState];
+          copy.push(newSize);
+          return copy;
+        });
+        setCategorySelected([]);
+        resetForm();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -426,8 +427,12 @@ export const useProductContainer = () => {
   const indexSupplierTable = ["Nombre", "Nit", "Telefono"];
   const valuesSupplierTable = ["name", "nit", "phone"];
 
-  const indexCategoryTable = ["Nombre", "ID"];
-  const valuesCategoryTable = ["name", "_id"];
+  const indexCategoryTable = [];
+  const valuesCategoryTable = ["name"];
+
+  const indexSizeTable = ["Nombre", "Categorias"];
+  const valuesSizeTable = ["name", "categories"];
+
   const tabsDataSupplierCategorySize = {
     supplierData: [
       {
@@ -437,6 +442,7 @@ export const useProductContainer = () => {
             index={indexSupplierTable}
             data={suppliersState}
             values={valuesSupplierTable}
+            variant="unstyled"
           />
         ),
       },
@@ -457,6 +463,7 @@ export const useProductContainer = () => {
             index={indexCategoryTable}
             data={categoriesState}
             values={valuesCategoryTable}
+            variant="unstyled"
           />
         ),
       },
@@ -474,9 +481,10 @@ export const useProductContainer = () => {
         name: "Lista",
         body: (
           <TableGeneral
-            index={indexCategoryTable}
+            index={indexSizeTable}
             data={sizesState}
-            values={valuesCategoryTable}
+            values={valuesSizeTable}
+            variant="unstyled"
           />
         ),
       },

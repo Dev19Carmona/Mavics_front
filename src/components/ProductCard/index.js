@@ -1,5 +1,4 @@
-import { Box, Flex, Text, Tooltip } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { BiRectangle } from "react-icons/bi";
 import { IMAGE_TEST_PRODUCT } from "../../../config/_constants";
@@ -20,6 +19,7 @@ export const ProductCard = ({
   const { colorMode } = useColorModeGeneral();
   const { src, isIcon, icon, name, price, body, product } = data;
   const sizesPicture = 79
+  console.log(src);
   return (
     <Flex
       boxShadow={"md"}
@@ -46,14 +46,14 @@ export const ProductCard = ({
         {isIcon ? (
           <Box fontSize={`${sizesPicture}px`}>{icon}</Box>
         ) : (
-            <Image
-              src={src}
-              alt="img"
-              width={150}
-              height={150}
-              style={{ objectFit: "contain" }}
-              
-            />
+          <Image
+          rounded={"full"}
+          src={src}
+          alt="img"
+          width={sizesPicture}
+          height={sizesPicture}
+          style={{ objectFit: "contain" }}
+        />
         )}
       </Flex>
       {!isIcon && (
