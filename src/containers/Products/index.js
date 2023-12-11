@@ -49,6 +49,7 @@ export const ProductsContainer = () => {
     tabsDataSupplierCategorySize = {},
     sizesSelected,
     setSizesSelected,
+    productSave,
   } = useProductContainer();
 
   const {
@@ -122,7 +123,7 @@ export const ProductsContainer = () => {
     {
       id: "2",
       name: "productPresentation",
-      body: <ProductPresentation props={{ productPresentation }} />,
+      body: <ProductPresentation props={{ productPresentation, productSave, loadNewProduct }} />,
       isOpen: settingsModalProductPresentation.isOpen,
       onClose: () => {
         handleOpenAndCloseModal(settingsModalProductPresentation);

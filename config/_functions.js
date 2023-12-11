@@ -1,4 +1,4 @@
-export const cutString = (string) => {
+export const cutString = (string = '--') => {
   let cut;
   if (string.length > 11) {
     cut = string.substring(0, 11);

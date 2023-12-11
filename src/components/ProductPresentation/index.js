@@ -1,32 +1,49 @@
-import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
-import { Flex, Grid, GridItem, Image, Input, Text } from "@chakra-ui/react";
-import { BoxPresentation } from "../BoxPresentation";
-import { TableGeneral } from "../TableGeneral";
-import { useState } from "react";
-import { InputGeneral } from "../InputGeneral";
+import { useColorModeGeneral } from '@/hooks/useColorModeGeneral'
+import { Flex, Grid, GridItem, Image, Input, Text } from '@chakra-ui/react'
+import { BoxPresentation } from '../BoxPresentation'
+import { TableGeneral } from '../TableGeneral'
+import { useState, useEffect } from 'react'
+import { InputGeneral } from '../InputGeneral'
+import { LoaderGeneral } from '../LoaderGeneral'
 
 export const ProductPresentation = ({ props }) => {
-  const { productPresentation } = props;
-  const { sizes } = productPresentation;
-  const { colorMode } = useColorModeGeneral();
-  const indexSizes = ["Talla", "Cantidad"];
-  const valuesSizeTable = ["name", "amount"];
-  const [isEditing, setIsEditing] = useState("");
-  const [data, setData] = useState(productPresentation);
+  const { productPresentation, productSave, loadNewProduct } = props
+  const { sizes } = productPresentation
+  const { colorMode } = useColorModeGeneral()
+  const indexSizes = ['Talla', 'Cantidad']
+  const valuesSizeTable = ['name', 'amount']
+  const [isEditing, setIsEditing] = useState('')
+  const [data, setData] = useState(productPresentation)
+  const { _id } = productPresentation
+  const initialUpdate = { _id }
+  const [updating, setUpdating] = useState(initialUpdate)
+
   const handleDoubleClick = (value) => {
-    setIsEditing(value);
-  };
+    setIsEditing(value)
+  }
   const handleChange = (e, field) => {
     setData((prevState) => {
-      const copy = { ...prevState };
-      copy[field] = e.target.value;
-      return copy;
-    });
-  };
+      const copy = { ...prevState }
+      copy[field] = e.target.value
+      return copy
+    })
+    setUpdating((prevState) => {
+      const copy = { ...prevState }
+      copy[field] = e.target.value
+      return copy
+    })
+  }
   const handleBlur = () => {
-    setIsEditing("");
+    setIsEditing('')
+    productSave({
+      variables: {
+        data: updating,
+      },
+    })
+    setUpdating(initialUpdate)
+
     // Aquí puedes realizar la lógica para guardar el nuevo valor, por ejemplo, llamando a una función de actualización en tu componente principal.
-  };
+  }
 
   return (
     <Grid
@@ -40,12 +57,12 @@ export const ProductPresentation = ({ props }) => {
         <BoxPresentation
           body={
             <Image
-              rounded={"full"}
+              rounded={'full'}
               src={data?.urlImage}
               alt="img"
               width={150}
               height={150}
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: 'contain' }}
             />
           }
         />
@@ -53,15 +70,16 @@ export const ProductPresentation = ({ props }) => {
 
       <GridItem
         onDoubleClick={() => {
-          handleDoubleClick("name");
+          handleDoubleClick('name')
         }}
       >
-        {isEditing === "name" ? (
+        {isEditing === 'name' ? (
           <InputGeneral
+            right={null}
             left={
               <Input
                 onChange={(e) => {
-                  handleChange(e, "name");
+                  handleChange(e, 'name')
                 }}
                 onBlur={handleBlur}
                 pr="4.5rem"
@@ -73,30 +91,26 @@ export const ProductPresentation = ({ props }) => {
           />
         ) : (
           <BoxPresentation
-            body={<Text fontWeight={"bold"}>{data?.name}</Text>}
+            body={<Text fontWeight={'bold'}>{data?.name}</Text>}
           />
         )}
       </GridItem>
 
       <GridItem
         onDoubleClick={() => {
-          handleDoubleClick("description");
+          handleDoubleClick('description')
         }}
       >
-        {isEditing === "description" ? (
-          <InputGeneral
-            left={
-              <Input
-                onChange={(e) => {
-                  handleChange(e, "description");
-                }}
-                onBlur={handleBlur}
-                pr="4.5rem"
-                value={data?.description}
-                type="text"
-                autoFocus
-              />
-            }
+        {isEditing === 'description' ? (
+          <Input
+            onChange={(e) => {
+              handleChange(e, 'description')
+            }}
+            onBlur={handleBlur}
+            pr="4.5rem"
+            value={data?.description}
+            type="text"
+            autoFocus
           />
         ) : (
           <BoxPresentation body={<Text>{data?.description}</Text>} />
@@ -105,25 +119,22 @@ export const ProductPresentation = ({ props }) => {
 
       <GridItem
         onDoubleClick={() => {
-          handleDoubleClick("price");
+          handleDoubleClick('price')
         }}
       >
-        {isEditing === "price" ? (
-          <BoxPresentation
-            body={
-              <InputGeneral
-                left={
-                  <Input
-                    onChange={(e) => {
-                      handleChange(e, "price");
-                    }}
-                    onBlur={handleBlur}
-                    pr="4.5rem"
-                    value={data?.price}
-                    type="number"
-                    autoFocus
-                  />
-                }
+        {isEditing === 'price' ? (
+          <InputGeneral
+            right={null}
+            left={
+              <Input
+                onChange={(e) => {
+                  handleChange(e, 'price')
+                }}
+                onBlur={handleBlur}
+                pr="4.5rem"
+                value={data?.price}
+                type="number"
+                autoFocus
               />
             }
           />
@@ -149,6 +160,7 @@ export const ProductPresentation = ({ props }) => {
           }
         />
       </GridItem>
+      {loadNewProduct && <LoaderGeneral />}
     </Grid>
-  );
-};
+  )
+}

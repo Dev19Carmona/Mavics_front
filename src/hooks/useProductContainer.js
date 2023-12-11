@@ -545,5 +545,6 @@ export const useProductContainer = () => {
     tabsDataSupplierCategorySize,
     sizesSelected,
     setSizesSelected,
+    productSave,
   };
 };
