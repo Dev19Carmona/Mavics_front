@@ -12,7 +12,6 @@ import {
 import { TagCard } from "../TagCard";
 
 export const TableGeneral = ({ index = [], data = [], values = [], variant='unstyled' }) => {
-  console.log(data);
   const { colorMode } = useColorModeGeneral();
   const rows = (element) => {
     return values.map((val) => {
@@ -40,13 +39,13 @@ export const TableGeneral = ({ index = [], data = [], values = [], variant='unst
         <Thead>
           <Tr>
             {index.map((i) => (
-              <Th>{i}</Th>
+              <Th >{i}</Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
           {data.map((element) => (
-            <Tr>{rows(element)}</Tr>
+            <Tr onClick={()=>{console.log('PRUEBA ONCLICK');}}>{rows(element)}</Tr>
           ))}
         </Tbody>
       </Table>
