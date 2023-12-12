@@ -222,9 +222,8 @@ export const ProductPresentation = ({ props }) => {
                 autoFocus
               >
                 {
-                  suppliers.map(supplier=>(
-
-                    <option value={JSON.stringify(supplier)}>{supplier.name}</option>
+                  suppliers.map((supplier, i)=>(
+                    <option key={i} value={JSON.stringify(supplier)}>{supplier.name}</option>
                   ))
                 }
               </Input>
