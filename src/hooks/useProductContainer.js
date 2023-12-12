@@ -10,7 +10,7 @@ import { LuCopyCheck, LuInspect } from "react-icons/lu";
 import { SizeSave, Sizes } from "@/graphql/Size";
 import { SupplierForm } from "@/components/SupplierForm";
 import { TableGeneral } from "@/components/TableGeneral";
-import { addField, getLazyQuery } from "../../config/_functions";
+import { addField, getLazyQuery, unformatPrice } from "../../config/_functions";
 import { CategoryForm } from "@/components/CategoryForm";
 import { SizeForm } from "@/components/SizeForm";
 export const useProductContainer = () => {
@@ -177,7 +177,7 @@ export const useProductContainer = () => {
   useEffect(() => {
     const products = Products?.products.map((product) => {
       const res = { ...product };
-      delete res.supplier;
+      // delete res.supplier;
       return res;
     });
     setProductEdit(products);

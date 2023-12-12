@@ -1,23 +1,33 @@
 import { useColorModeGeneral } from '@/hooks/useColorModeGeneral'
-import { Flex, Grid, GridItem, Image, Input, Text } from '@chakra-ui/react'
+import {
+  Flex,
+  Grid,
+  GridItem,
+  Image,
+  Input,
+  Select,
+  Text,
+} from '@chakra-ui/react'
 import { BoxPresentation } from '../BoxPresentation'
 import { TableGeneral } from '../TableGeneral'
 import { useState, useEffect } from 'react'
 import { InputGeneral } from '../InputGeneral'
 import { LoaderGeneral } from '../LoaderGeneral'
+import { genderObject } from '../../../config/_constants'
+import { formatPrice, getLazyQuery } from '../../../config/_functions'
 
 export const ProductPresentation = ({ props }) => {
-  const { productPresentation, productSave, loadNewProduct } = props
+  const { productPresentation, productSave, loadNewProduct, getSuppliers } = props
   const { sizes } = productPresentation
   const { colorMode } = useColorModeGeneral()
   const indexSizes = ['Talla', 'Cantidad']
   const valuesSizeTable = ['name', 'amount']
   const [isEditing, setIsEditing] = useState('')
   const [data, setData] = useState(productPresentation)
+  const [suppliers, setSuppliers] = useState([])
   const { _id } = productPresentation
   const initialUpdate = { _id }
   const [updating, setUpdating] = useState(initialUpdate)
-
   const handleDoubleClick = (value) => {
     setIsEditing(value)
   }
@@ -29,17 +39,20 @@ export const ProductPresentation = ({ props }) => {
     })
     setUpdating((prevState) => {
       const copy = { ...prevState }
-      copy[field] = e.target.value
+      copy[field] =
+        field === 'price' ? parseInt(e.target.value) : e.target.value
       return copy
     })
   }
   const handleBlur = () => {
     setIsEditing('')
-    productSave({
-      variables: {
-        data: updating,
-      },
-    })
+    if (data !== productPresentation) {
+      productSave({
+        variables: {
+          data: updating,
+        },
+      })
+    }
     setUpdating(initialUpdate)
 
     // Aquí puedes realizar la lógica para guardar el nuevo valor, por ejemplo, llamando a una función de actualización en tu componente principal.
@@ -143,9 +156,84 @@ export const ProductPresentation = ({ props }) => {
             body={<Text>$ {Math.floor(data?.price).toLocaleString()}</Text>}
           />
         )}
-        {/* <BoxPresentation
-          body={<Text>$ {Math.floor(data?.price).toLocaleString()}</Text>}
-        /> */}
+      </GridItem>
+      <GridItem
+        onDoubleClick={() => {
+          handleDoubleClick('gender')
+        }}
+      >
+        {isEditing === 'gender' ? (
+          <InputGeneral
+            right={null}
+            left={
+              <Input
+                as={Select}
+                onChange={(e) => {
+                  handleChange(e, 'gender')
+                }}
+                onBlur={data?.gender ? handleBlur : ''}
+                pr="4.5rem"
+                value={data?.gender}
+                type="number"
+                autoFocus
+              >
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+              </Input>
+            }
+          />
+        ) : (
+          <BoxPresentation body={<Text>{genderObject[data?.gender]}</Text>} />
+        )}
+      </GridItem>
+      <GridItem
+        onDoubleClick={() => {
+          if(suppliers.length === 0)
+          getLazyQuery(getSuppliers, 'suppliers', setSuppliers)
+
+          handleDoubleClick('supplierId')
+        }}
+      >
+        {isEditing === 'supplierId' ? (
+          <InputGeneral
+            right={null}
+            left={
+              <Input
+                as={Select}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  const supplier = JSON.parse(e.target.value)
+                  const { _id } = supplier
+                  setData((prevState) => {
+                    const copy = { ...prevState }
+                    copy['supplier'] = supplier
+                    return copy
+                  })
+                  setUpdating((prevState) => {
+                    const copy = { ...prevState }
+                    copy['supplierId'] = _id
+                    return copy
+                  })
+                }}
+                onBlur={suppliers.length > 0 ? handleBlur : ''}
+                pr="4.5rem"
+                value={data?.supplierId}
+                type="number"
+                autoFocus
+              >
+                {
+                  suppliers.map(supplier=>(
+
+                    <option value={JSON.stringify(supplier)}>{supplier.name}</option>
+                  ))
+                }
+              </Input>
+            }
+          />
+        ) : (
+          <BoxPresentation body={<Text>{data?.supplier?.name}</Text>} />
+        )}
+        
       </GridItem>
 
       <GridItem colSpan={2}>

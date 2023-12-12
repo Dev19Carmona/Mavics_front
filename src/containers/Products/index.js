@@ -123,7 +123,7 @@ export const ProductsContainer = () => {
     {
       id: "2",
       name: "productPresentation",
-      body: <ProductPresentation props={{ productPresentation, productSave, loadNewProduct }} />,
+      body: <ProductPresentation props={{ productPresentation, productSave, loadNewProduct, getSuppliers }} />,
       isOpen: settingsModalProductPresentation.isOpen,
       onClose: () => {
         handleOpenAndCloseModal(settingsModalProductPresentation);
@@ -251,21 +251,6 @@ export const ProductsContainer = () => {
               right={<GiMagnifyingGlass />}
             />
           </Box>
-          {/* <ProductSearch
-            getSuppliers={getSuppliers}
-            suppliers={suppliersState}
-            handleSearchProduct={handleSearchProduct}
-            handleSubmitSearchProduct={handleSubmitSearchProduct}
-            handleSubmitSearchProductPerTag={handleSubmitSearchProductPerTag}
-            handleSubmitSearchProductPerSupplier={
-              handleSubmitSearchProductPerSupplier
-            }
-            tags={tags?.tags}
-            handleDeleteFilters={handleDeleteFilters}
-            handleFilterProducts={handleFilterProducts}
-            getCategories={getCategories}
-            getSizes={getSizes}
-          /> */}
           <ProductsGrid
             handleOpenModalProductSave={handleOpenModalProductSave}
             rightClickOptions={rightClickOptions}

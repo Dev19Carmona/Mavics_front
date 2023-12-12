@@ -33,7 +33,7 @@ import {
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { LiaUsersCogSolid } from "react-icons/lia";
-import { getLazyQuery } from "../../../config/_functions";
+import { formatPrice, getLazyQuery } from "../../../config/_functions";
 import { GENDERS } from "../../../config/_constants";
 import { TbCategory, TbRulerMeasure } from "react-icons/tb";
 
@@ -60,6 +60,8 @@ export const ProductForm = ({ props }) => {
   const [suppliers, setSuppliers] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
+
+  
   useEffect(() => {
     if (suppliers.length === 0)
       getLazyQuery(getSuppliers, "suppliers", setSuppliers);
@@ -142,16 +144,16 @@ export const ProductForm = ({ props }) => {
               <GridItem>
                 <Flex
                   gap={2}
-                  flexDir={"column"}
+                  flexDir={'column'}
                   p={4}
                   boxShadow="md"
                   borderRadius={9}
                 >
-                  <Flex justifyContent={"space-between"}>
+                  <Flex justifyContent={'space-between'}>
                     <Text>Datos Generales:</Text>
-                    {values.name !== "" &&
-                    values.description !== "" &&
-                    values.price !== "" ? (
+                    {values.name !== '' &&
+                    values.description !== '' &&
+                    values.price !== '' ? (
                       <FaCheckSquare fontSize={20} color="teal" />
                     ) : (
                       <FaListUl fontSize={20} />
@@ -183,6 +185,9 @@ export const ProductForm = ({ props }) => {
                       placeholder="Precio"
                       required={true}
                       onKeyPress={handleKeyPress}
+                      // onChange={(e) => {
+                      //   setFieldValue('price', e.target.value)
+                      // }}
                     />
                   </FormControl>
                 </Flex>
@@ -191,12 +196,12 @@ export const ProductForm = ({ props }) => {
               <GridItem>
                 <Flex
                   gap={2}
-                  flexDir={"column"}
+                  flexDir={'column'}
                   p={4}
                   boxShadow="md"
                   borderRadius={9}
                 >
-                  <Flex justifyContent={"space-between"}>
+                  <Flex justifyContent={'space-between'}>
                     {imageProduct ? (
                       <Text>Vista Previa</Text>
                     ) : (
@@ -213,25 +218,25 @@ export const ProductForm = ({ props }) => {
                     {imageProduct && (
                       //<Collapse in={isOpen} animateOpacity>
                       <Flex
-                        justifyContent={"center"}
-                        alignItems={"center"}
+                        justifyContent={'center'}
+                        alignItems={'center'}
                         //position="absolute"
                         //className="product-preview"
                       >
                         <Flex
                           borderRadius={9}
-                          justifyContent={"center"}
-                          alignItems={"center"}
+                          justifyContent={'center'}
+                          alignItems={'center'}
                           gap={2}
-                          flexDir={"column"}
-                          position={"relative"}
+                          flexDir={'column'}
+                          position={'relative'}
                           left={20}
                           bottom={4}
                           boxShadow="xl"
-                          rounded={"full"}
+                          rounded={'full'}
                         >
                           <Image
-                            rounded={"full"}
+                            rounded={'full'}
                             src={URL.createObjectURL(imageProduct)}
                             alt="brandPreview"
                             objectFit="contain"
@@ -248,24 +253,24 @@ export const ProductForm = ({ props }) => {
                       name="image"
                       accept="image/png, image/jpeg"
                       onChange={(e) => {
-                        handleSaveImageProduct(e);
+                        handleSaveImageProduct(e)
                       }}
-                      style={{ display: "none" }}
+                      style={{ display: 'none' }}
                     />
                     <Flex
-                      transition={"background-color 0.3s ease"}
-                      _hover={{ bg: "black", color: "white" }}
-                      cursor={"pointer"}
+                      transition={'background-color 0.3s ease'}
+                      _hover={{ bg: 'black', color: 'white' }}
+                      cursor={'pointer'}
                       borderRadius={5}
-                      m={"auto"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      bg={colorMode === "dark" ? "tags.dark" : "tags.light"}
-                      color={colorMode === "dark" ? "black" : "white"}
+                      m={'auto'}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                      bg={colorMode === 'dark' ? 'tags.dark' : 'tags.light'}
+                      color={colorMode === 'dark' ? 'black' : 'white'}
                     >
                       <label htmlFor="image" style={labelStyles}>
                         <BiImageAdd fontSize={24} />
-                        {imageProduct ? "" : "Subir imagen"}
+                        {imageProduct ? '' : 'Subir imagen'}
                       </label>
                     </Flex>
                   </Flex>
@@ -275,14 +280,14 @@ export const ProductForm = ({ props }) => {
               <GridItem>
                 <Flex
                   gap={2}
-                  flexDir={"column"}
+                  flexDir={'column'}
                   p={4}
                   boxShadow="md"
                   borderRadius={9}
                 >
-                  <Flex justifyContent={"space-between"}>
+                  <Flex justifyContent={'space-between'}>
                     <Text>Genero:</Text>
-                    {values.gender === "" ? (
+                    {values.gender === '' ? (
                       <FaGenderless fontSize={20} />
                     ) : (
                       <FaCheckSquare fontSize={20} color="teal" />
@@ -303,9 +308,9 @@ export const ProductForm = ({ props }) => {
                     </Field>
                   </FormControl>
 
-                  <Flex justifyContent={"space-between"}>
+                  <Flex justifyContent={'space-between'}>
                     <Text>Proveedores:</Text>
-                    {values.supplierId === "" ? (
+                    {values.supplierId === '' ? (
                       <FaUsers fontSize={20} />
                     ) : (
                       <FaCheckSquare fontSize={20} color="teal" />
@@ -326,14 +331,13 @@ export const ProductForm = ({ props }) => {
                     </Field>
                   </FormControl>
 
-                  <Flex justifyContent={"space-between"}>
+                  <Flex justifyContent={'space-between'}>
                     <Text>Categorias:</Text>
-                    {values.categoryId === "" ? (
+                    {values.categoryId === '' ? (
                       <TbCategory fontSize={20} />
                     ) : (
                       <FaCheckSquare fontSize={20} color="teal" />
                     )}
-                    
                   </Flex>
                   <FormControl id="categoryId">
                     <Field
@@ -342,15 +346,15 @@ export const ProductForm = ({ props }) => {
                       type="text"
                       placeholder="----"
                       onChange={(e) => {
-                        setFieldValue("categoryId", e.target.value);
-                        const array = [e.target.value];
-                        getLazyQuery(getSizes, "sizes", setSizes, {
+                        setFieldValue('categoryId', e.target.value)
+                        const array = [e.target.value]
+                        getLazyQuery(getSizes, 'sizes', setSizes, {
                           variables: {
                             filter: {
                               categoryIds: [e.target.value],
                             },
                           },
-                        });
+                        })
                       }}
                     >
                       {categories.map((cateogry, i) => (
@@ -364,20 +368,25 @@ export const ProductForm = ({ props }) => {
                   <Flex
                     color={
                       !values.categoryId || sizes.length === 0
-                        ? "gray"
-                        : "white"
+                        ? 'gray'
+                        : 'white'
                     }
-                    justifyContent={"space-between"}
+                    justifyContent={'space-between'}
                   >
-                    <Text color={!values.categoryId || sizes.length === 0
-                        ? "gray"
-                        : "black"}>Tallas:</Text>
-                    {values.sizeId === "" ? (
+                    <Text
+                      color={
+                        !values.categoryId || sizes.length === 0
+                          ? 'gray'
+                          : 'black'
+                      }
+                    >
+                      Tallas:
+                    </Text>
+                    {values.sizeId === '' ? (
                       <TbRulerMeasure fontSize={20} />
                     ) : (
                       <FaCheckSquare fontSize={20} color="teal" />
                     )}
-                    
                   </Flex>
 
                   <FormControl id="sizeId">
@@ -388,8 +397,8 @@ export const ProductForm = ({ props }) => {
                       placeholder="----"
                       disabled={!values.categoryId || sizes.length === 0}
                       onChange={(e) => {
-                        setFieldValue("sizeId", e.target.value);
-                        addSizes(e.target.value);
+                        setFieldValue('sizeId', e.target.value)
+                        addSizes(e.target.value)
                       }}
                     >
                       {sizes.map((size, i) => (
@@ -405,7 +414,7 @@ export const ProductForm = ({ props }) => {
                 <GridItem>
                   <Flex
                     gap={2}
-                    flexDir={"column"}
+                    flexDir={'column'}
                     p={4}
                     boxShadow="md"
                     borderRadius={9}
@@ -425,13 +434,13 @@ export const ProductForm = ({ props }) => {
                               <Td>
                                 <Flex
                                   gap={5}
-                                  alignItems={"center"}
-                                  justifyContent={"center"}
+                                  alignItems={'center'}
+                                  justifyContent={'center'}
                                 >
                                   <ButtonSubmitGeneral
                                     type="button"
                                     onClick={() => {
-                                      subtractSizes(sizeSelected._id);
+                                      subtractSizes(sizeSelected._id)
                                     }}
                                     title={<CiCircleMinus fontSize={25} />}
                                     rightIcon={null}
@@ -440,7 +449,7 @@ export const ProductForm = ({ props }) => {
                                   <ButtonSubmitGeneral
                                     type="button"
                                     onClick={() => {
-                                      addSizes(sizeSelected._id);
+                                      addSizes(sizeSelected._id)
                                     }}
                                     title={<CiCirclePlus fontSize={25} />}
                                     rightIcon={null}
@@ -456,12 +465,12 @@ export const ProductForm = ({ props }) => {
                 </GridItem>
               ) : null}
             </Grid>
-            <Flex mt={10} justifyContent={"center"}>
-              <ButtonSubmitGeneral title={"Crear"} />
+            <Flex mt={10} justifyContent={'center'}>
+              <ButtonSubmitGeneral title={'Crear'} />
             </Flex>
           </Form>
         )}
       </Formik>
     </Box>
-  );
+  )
 };

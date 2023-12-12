@@ -1,6 +1,4 @@
 import { CardDashboardRoutes } from "@/components/CardDashboardRoutes";
-import { TableCustom } from "@/components/TableCustom";
-import { TuComponente } from "@/components/TestComponent";
 import { WaterMark } from "@/components/WaterMark";
 import { useColorModeGeneral } from "@/hooks/useColorModeGeneral";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -47,7 +45,6 @@ export const DashboardContainer = () => {
             />
           ))}
         </Flex>
-        <Box><TableCustom/></Box>
         <Box></Box>
       </Grid>
     </Flex>
