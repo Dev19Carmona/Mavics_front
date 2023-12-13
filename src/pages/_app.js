@@ -50,14 +50,14 @@ const authLink = setContext((_, { headers }) => {
   };
 }).concat(
   createUploadLink({
-    uri: isDevBack ? urlBackDevelopment.http : urlBackProduction.http,
+    uri: "https://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
   })
 );
 
 const wsLink = new GraphQLWsLink(
   createClient({
     webSocketImpl: WebSocket,
-    url: isDevBack ? urlBackDevelopment.ws : urlBackProduction.ws,
+    url: "wss://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
   })
 );
 
