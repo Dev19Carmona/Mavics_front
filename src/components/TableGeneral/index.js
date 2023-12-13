@@ -14,9 +14,9 @@ import { TagCard } from "../TagCard";
 export const TableGeneral = ({ index = [], data = [], values = [], variant='unstyled' }) => {
   const { colorMode } = useColorModeGeneral();
   const rows = (element) => {
-    return values.map((val) => {
+    return values.map((val, i) => {
       if (Array.isArray(element[val])) {
-        return <Box>
+        return <Box key={i}>
           <TableGeneral
         index={[]}
         data={element[val]}
@@ -25,7 +25,7 @@ export const TableGeneral = ({ index = [], data = [], values = [], variant='unst
       />
         </Box>
       }else{
-        return <Td borderBottom={colorMode === "light" ?'1px solid #D3D3D3':'1px solid #1A202C'}><TagCard props={{title:element[val]}}/></Td>
+        return <Td key={i} borderBottom={colorMode === "light" ?'1px solid #D3D3D3':'1px solid #1A202C'}><TagCard props={{title:element[val]}}/></Td>
       }
     });
   };
@@ -38,14 +38,14 @@ export const TableGeneral = ({ index = [], data = [], values = [], variant='unst
       >
         <Thead>
           <Tr>
-            {index.map((i) => (
-              <Th >{i}</Th>
+            {index.map((i, key) => (
+              <Th key={key}>{i}</Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((element) => (
-            <Tr onClick={()=>{console.log('PRUEBA ONCLICK');}}>{rows(element)}</Tr>
+          {data.map((element, i) => (
+            <Tr key={i} onClick={()=>{console.log('PRUEBA ONCLICK');}}>{rows(element)}</Tr>
           ))}
         </Tbody>
       </Table>

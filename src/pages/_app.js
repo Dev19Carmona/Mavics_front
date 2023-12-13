@@ -53,7 +53,7 @@ const authLink = setContext((_, { headers }) => {
     uri: isDevBack ? urlBackDevelopment.http : urlBackProduction.http,
   })
 );
-//hola
+
 const wsLink = new GraphQLWsLink(
   createClient({
     webSocketImpl: WebSocket,

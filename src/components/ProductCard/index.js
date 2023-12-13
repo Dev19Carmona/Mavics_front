@@ -18,8 +18,7 @@ export const ProductCard = ({
 }) => {
   const { colorMode } = useColorModeGeneral();
   const { src, isIcon, icon, name, price, body, product } = data;
-  const sizesPicture = 79
-  console.log(src);
+  const sizesPicture = 120
   return (
     <Flex
       boxShadow={"md"}

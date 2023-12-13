@@ -3,7 +3,11 @@ export const IMAGE_ADD_PRODUCT = "https://c8.alamy.com/compes/2gppfm7/cesta-de-l
 export const IMAGE_TEST_PRODUCT = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2evMR0qWJ3AvA0Q6FvbaksadrRqhM9FSh35wFt2Qe1w&s"
 
 ///OBJECTS-----
-
+export const genderObject = Object.freeze({
+  'M':"Masculino",
+  'F':"Femenino"
+})
+//ARRAYS------
 export const GENDERS = [
   {
     id:"1",

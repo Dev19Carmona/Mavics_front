@@ -1,12 +1,8 @@
 import { Text, Grid, SimpleGrid } from "@chakra-ui/react";
 import { ProductCard } from "../ProductCard";
-import {
-  IMAGE_ADD_PRODUCT,
-  IMAGE_TEST_PRODUCT,
-} from "../../../config/_constants";
 import { AiOutlineFolderAdd } from "react-icons/ai";
 import { MenuGeneral } from "../MenuGeneral";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 export const ProductsGrid = ({
   products = [],
