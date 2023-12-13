@@ -33,7 +33,7 @@ const urlBackProduction = {
   http:"https://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
   ws:"wss://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql"
 }
-const isDevBack = true
+const isDevBack = false
 const theme = extendTheme({
   fonts,
   colors,
