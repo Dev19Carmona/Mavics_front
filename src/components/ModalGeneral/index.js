@@ -20,12 +20,12 @@ export const ModalGeneral = ({
   color = "black",
 }) => {
   return (
-    <Modal scrollBehavior={'inside'} size={size} isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal  scrollBehavior={'inside'} size={size} isCentered isOpen={isOpen} onClose={onClose}>
       {overlay}
-      <ModalContent>
+      <ModalContent >
         <ModalHeader color={color}>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{body}</ModalBody>
+        <ModalBody style={{ position: "relative" }}>{body}</ModalBody>
       </ModalContent>
     </Modal>
   );

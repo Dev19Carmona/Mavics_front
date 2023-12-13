@@ -155,7 +155,7 @@ export const ProductsContainer = () => {
       },
       overlay: settingsModalSupplier.overlay,
       title: "Proveedores",
-      size: "full",
+      size: "xl",
       color: colorMode === "light" ? "header.light" : "header.dark",
     },
     {

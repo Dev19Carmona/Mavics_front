@@ -50,14 +50,14 @@ const authLink = setContext((_, { headers }) => {
   };
 }).concat(
   createUploadLink({
-    uri: "https://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
+    uri: "http://localhost:4000/graphql",
   })
 );
 
 const wsLink = new GraphQLWsLink(
   createClient({
     webSocketImpl: WebSocket,
-    url: "wss://mavicsback-dev-gfsd.4.us-1.fl0.io/graphql",
+    url: "ws://localhost:4000/graphql",
   })
 );
 

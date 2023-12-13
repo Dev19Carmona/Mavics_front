@@ -42,3 +42,17 @@ export const formatPrice = (value) => {
   const numericValue = Math.floor(parseInt(value)).toLocaleString()
   return numericValue
 }
+
+export const isInteger = (number) => number === Math.floor(number);
+
+export const getBounding = (ref) => {
+    const boundingBox = ref.current.getBoundingClientRect();
+
+    const width = boundingBox.width;
+    const height = boundingBox.height;
+
+    return {
+      width,
+      height
+    }
+}

@@ -432,7 +432,7 @@ export const useProductContainer = () => {
 
   const indexSizeTable = ["Nombre", "Categorias"];
   const valuesSizeTable = ["name", "categories"];
-
+ 
   const tabsDataSupplierCategorySize = {
     supplierData: [
       {
@@ -443,6 +443,7 @@ export const useProductContainer = () => {
             data={suppliersState}
             values={valuesSupplierTable}
             variant="unstyled"
+            size="sm"
           />
         ),
       },

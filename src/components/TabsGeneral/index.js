@@ -4,7 +4,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 export const TabsGeneral = ({ array = [] }) => {
   const { colorMode } = useColorModeGeneral();
   return (
-    <Tabs direction="rtl" isFitted variant="enclosed" isLazy={true}>
+    <Tabs onContextMenu={(e) => e.preventDefault()} direction="rtl" isFitted variant="enclosed" isLazy={true}>
       <TabList mb="1em">
         {array.map((element, i) => (
           <Tab key={i}>{element.name}</Tab>

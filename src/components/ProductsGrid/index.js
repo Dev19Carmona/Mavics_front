@@ -36,7 +36,7 @@ export const ProductsGrid = ({
             }}
             onClickProductPresentation={handleOpenModalProductPresentation}
           />
-          <MenuGeneral options={rightClickOptions} props={{isMenuOpen, setIsMenuOpen, menuPosition, product}}/>
+          <MenuGeneral options={rightClickOptions} props={{isMenuOpen, setIsMenuOpen, menuPosition, element:product}}/>
         </Grid>
       ))}
     </SimpleGrid>

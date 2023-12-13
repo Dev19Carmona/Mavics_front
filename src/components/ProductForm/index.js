@@ -33,7 +33,7 @@ import {
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { LiaUsersCogSolid } from "react-icons/lia";
-import { formatPrice, getLazyQuery } from "../../../config/_functions";
+import { formatPrice, getLazyQuery, pointsNotation } from "../../../config/_functions";
 import { GENDERS } from "../../../config/_constants";
 import { TbCategory, TbRulerMeasure } from "react-icons/tb";
 
@@ -181,12 +181,12 @@ export const ProductForm = ({ props }) => {
                     <Field
                       name="price"
                       as={Input}
-                      type="number"
+                      type="text"
                       placeholder="Precio"
                       required={true}
                       onKeyPress={handleKeyPress}
                       // onChange={(e) => {
-                      //   setFieldValue('price', e.target.value)
+                      //   setFieldValue('price', pointsNotation(e.target.value))
                       // }}
                     />
                   </FormControl>
