@@ -12,11 +12,7 @@ import { useProductContainer } from "@/hooks/useProductContainer";
 import {
   Box,
   Flex,
-  Grid,
-  Image,
   Input,
-  SimpleGrid,
-  Text,
   Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";

@@ -36,32 +36,33 @@ import { LiaUsersCogSolid } from "react-icons/lia";
 import { formatPrice, getLazyQuery, pointsNotation } from "../../../config/_functions";
 import { GENDERS } from "../../../config/_constants";
 import { TbCategory, TbRulerMeasure } from "react-icons/tb";
+import { useProductCreate } from "@/hooks/useProductCreate";
 
 export const ProductForm = ({ props }) => {
+  const {
+    getSuppliers,
+    getCategories,
+    getSizes,
+    settingsModalProductSave
+  } = props;
+  const [suppliers, setSuppliers] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  
   const {
     handleSubmitProductCreate,
     initialValuesProduct,
     handleSaveImageProduct,
     imageProduct,
-    handleSearchTag,
-    tags,
-    tagFilter,
-    handleSelectTag,
-    tagsSelected,
-    suppliersState = [],
-    getSuppliers,
-    getCategories,
-    getSizes,
-    sizesSelected, 
-    setSizesSelected
-  } = props;
-
-  const { colorMode } = useColorModeGeneral();
-  const [suppliers, setSuppliers] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [sizes, setSizes] = useState([]);
-
+    sizesSelected,
+    labelStyles,
+    addSizes,
+    subtractSizes,
+    handleKeyPress,
+  } = useProductCreate(sizes, settingsModalProductSave)
   
+  const { colorMode } = useColorModeGeneral();
+ 
   useEffect(() => {
     if (suppliers.length === 0)
       getLazyQuery(getSuppliers, "suppliers", setSuppliers);
@@ -69,65 +70,7 @@ export const ProductForm = ({ props }) => {
       getLazyQuery(getCategories, "categories", setCategories);
   }, [getSuppliers, setCategories, setSuppliers, getCategories, suppliers, categories]);
 
-  const handleKeyPress = (e) => {
-    const key = e.key;
-    if (!/[0-9]/.test(key)) {
-      e.preventDefault();
-    }
-  };
-  const labelStyles = {
-    cursor: "pointer",
-    padding: 10,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  };
-  const addSizes = (id, operation = true) => {
-    //operation: true = suma / false = resta
-    const size = sizes.find((element) => element._id === id);
-    const existingSize = sizesSelected.find(
-      (sizeSelected) => sizeSelected._id === id
-    );
-    if (existingSize) {
-      const newSizeList = sizesSelected.map((sizeSelected) =>
-        sizeSelected._id === id
-          ? {
-              ...sizeSelected,
-              amount: sizeSelected.amount + 1,
-            }
-          : sizeSelected
-      );
-      setSizesSelected(newSizeList);
-    } else {
-      setSizesSelected([
-        ...sizesSelected,
-        { _id: id, name: size.name, amount: 1 },
-      ]);
-    }
-  };
-  const subtractSizes = (id) => {
-    const existingSize = sizesSelected.find(
-      (sizeSelected) => sizeSelected._id === id
-    );
 
-    if (existingSize) {
-      const newSizeList = sizesSelected.map((sizeSelected) =>
-        sizeSelected._id === id
-          ? {
-              ...sizeSelected,
-              amount: sizeSelected.amount - 1,
-            }
-          : sizeSelected
-      );
-
-      // Filtrar los tamaños que no tienen cantidad positiva
-      const filteredSizeList = newSizeList.filter(
-        (sizeSelected) => sizeSelected.amount > 0
-      );
-
-      setSizesSelected(filteredSizeList);
-    }
-  };
   return (
     <Box userSelect="none" margin={4} p={4} borderRadius={9}>
       <Formik
@@ -344,6 +287,7 @@ export const ProductForm = ({ props }) => {
                       name="categoryId"
                       as={Select}
                       type="text"
+                      disabled={sizesSelected.length > 0}
                       placeholder="----"
                       onChange={(e) => {
                         setFieldValue('categoryId', e.target.value)

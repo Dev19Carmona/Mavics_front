@@ -25,7 +25,7 @@ export const ModalGeneral = ({
       <ModalContent >
         <ModalHeader color={color}>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody style={{ position: "relative" }}>{body}</ModalBody>
+        <ModalBody>{body}</ModalBody>
       </ModalContent>
     </Modal>
   );
