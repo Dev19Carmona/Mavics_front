@@ -1,3 +1,5 @@
+
+import BarcodeScanner from "../../components/BarcodeScanner";
 import { ButtonActionsGeneral } from "@/components/ButtonActionsGeneral";
 import { InputGeneral } from "@/components/InputGeneral";
 import { LoaderGeneral } from "@/components/LoaderGeneral";
@@ -226,6 +228,8 @@ export const ProductsContainer = () => {
         position={"relative"}
       >
         <WaterMark />
+        {/* <BarcodeScanner/> */}
+
         <Flex gap={5} h={"100%"} w={"full"} direction={"column"}>
           <Box>
             <InputGeneral

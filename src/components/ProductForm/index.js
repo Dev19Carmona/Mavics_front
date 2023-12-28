@@ -102,6 +102,14 @@ export const ProductForm = ({ props }) => {
                       <FaListUl fontSize={20} />
                     )}
                   </Flex>
+                  <FormControl id="barcode">
+                    <Field
+                      name="barcode"
+                      as={Input}
+                      type="text"
+                      placeholder="Codigo de Barras"
+                    />
+                  </FormControl>
                   <FormControl id="name">
                     <Field
                       name="name"

@@ -21,6 +21,7 @@ export const useProductCreate = (sizes, settingsModalProductSave) => {
     categoryId: '',
     sizeId: '',
     gender: '',
+    barcode: ''
   })
   const [sizesSelected, setSizesSelected] = useState([])
 
@@ -64,6 +65,7 @@ export const useProductCreate = (sizes, settingsModalProductSave) => {
             categoryId: values.categoryId,
             sizes,
             gender: values.gender,
+            barcode: values.barcode
           },
         },
       })
